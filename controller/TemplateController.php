@@ -20,7 +20,9 @@ class TemplateController {
         } else {
 
             if(in_array($p, $allowed_pages)) {
+                $this->load('components/header');
                 $this->load('pages/'.$p.'');
+                $this->load('components/footer');
             } else {
                 $this->load('pages/404');
             }
@@ -44,7 +46,8 @@ class TemplateController {
     }
 
 
-    public function css($file) {
-        return '<link rel="stylesheet" href="public/css/'.$file.'.css">';
+    public static function css($file) {
+        return '<link rel="stylesheet" href="public/css/'.$file.'.css">
+        ';
     }
 }
