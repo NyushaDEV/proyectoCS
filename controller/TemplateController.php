@@ -1,13 +1,16 @@
 <?php
 
-class Template {
+/**
+ * Esta clase se encarga de mostrar las vistas.
+ */
+class TemplateController {
 
-    public function __construct() {
-
+    private $gcore; // global core
+    public function __construct($core) {
+        $this->gcore = $core;
     }
 
     public function load($template) {
-
         $path =  $_SERVER['DOCUMENT_ROOT'] . $_SERVER['REQUEST_URI'] . '/views';
         $file = $path . '/' . $template . '.php';
 
@@ -16,7 +19,12 @@ class Template {
             include($file);
             ob_end_flush();
         } else {
-            die('System Error: ' . $file . ' not found!');
+            $this->gcore->sysMessage('System Error: ' . $file . ' not found!');
         }
+    }
+
+
+    public function css($file) {
+        return '<link rel="stylesheet" href="public/css/'.$file.'.css">';
     }
 }
