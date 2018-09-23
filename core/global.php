@@ -1,4 +1,5 @@
 <?php
+define('root_path', dirname(__DIR__), true);
 
 /**
  * 
@@ -19,4 +20,7 @@ function __autoload( $class_name ) {
 $core = new CoreController();
 $template = new TemplateController($core);
 
-$template->load('tesst');
+
+
+
+

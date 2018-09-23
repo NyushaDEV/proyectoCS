@@ -8,10 +8,30 @@ class TemplateController {
     private $gcore; // global core
     public function __construct($core) {
         $this->gcore = $core;
+        $this->pageLoader();
     }
 
-    public function load($template) {
-        $path =  $_SERVER['DOCUMENT_ROOT'] . $_SERVER['REQUEST_URI'] . '/views';
+    private function pageLoader() {
+        $p = isset($_GET['p']) ? $_GET['p'] : '';
+        $allowed_pages = array('frontpage', 'flights', 'users');
+
+        if($p=='') {
+            $this->load('pages/frontpage');
+        } else {
+
+            if(in_array($p, $allowed_pages)) {
+                $this->load('pages/'.$p.'');
+            } else {
+                $this->load('pages/404');
+            }
+        }
+
+
+    }
+
+    public function load($template, $page=false) {
+        $path =  root_path . '/views';
+        
         $file = $path . '/' . $template . '.php';
 
         if(file_exists($file)) {
