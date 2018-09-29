@@ -66,7 +66,7 @@ class TemplateController {
         ';
     } else {
         if($external) {
-            $output = '<script src="'.$file.'">
+            $output = '<script src="'.$file.'"></script>
         ';
         } else {
             $output = '<script src="statics/js/'.$file.'.js"></script>

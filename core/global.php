@@ -1,6 +1,6 @@
 <?php
 define('root_path', dirname(__DIR__), true);
-
+define('SITENAME', 'Córdoba AirWays');
 /**
  * 
  * Autoloader que sirve para autocargar clases sin tener que definir la ruta de cada archivo de las clase.

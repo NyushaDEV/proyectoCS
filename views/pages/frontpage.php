@@ -1,8 +1,3 @@
-<h5>logo aqui.</h5>
-
-
-
-
 
 <div id="search">
 
@@ -23,7 +18,7 @@
                     <form action="">
                         <h4>Origen</h4>
                         <div class="form-group">
-                            <input placeholder="Aeropuerto de salida..." type="text" autofocus class="form-control fp-search" >
+                            <input id="origen" placeholder="Aeropuerto de salida..." type="text" autofocus class="form-control fp-search" >
                         </div>
 
                 </div>

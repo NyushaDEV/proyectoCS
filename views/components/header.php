@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="statics/bootstrap/css/bootstrap.min.css">
     <?= $this->addRessource('styles', 'css'); ?>
+    <?= $this->addRessource('jquery-ui.min', 'css'); ?>
 
-    <title>Proyecto KN</title>
+    <title><?= SITENAME; ?></title>
 </head>
 <body>
 <!-- Container -->
