@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <?= $this->css('styles'); ?>
-    <?= $this->css('bootstrap.min'); ?>
+    <link rel="stylesheet" href="statics/bootstrap/css/bootstrap.min.css">
+    <?= $this->addRessource('styles', 'css'); ?>
+
     <title>Proyecto KN</title>
 </head>
 <body>
-    
-</body>
-</html>
+<!-- Container -->
+<div class="container">
+

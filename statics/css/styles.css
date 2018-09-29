@@ -1,0 +1,20 @@
+body {
+  background: #d22536;
+  color: #fff;
+}
+.fp-search {
+  color: #444;
+}
+.fp-search:focus {
+  outline: none !important;
+}
+footer {
+  height: 80px;
+  position: absolute;
+  bottom: 10px;
+  width: 80%;
+  margin: auto;
+}
+#search {
+  margin-top: 100px;
+}

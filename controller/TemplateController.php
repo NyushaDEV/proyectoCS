@@ -15,18 +15,25 @@ class TemplateController {
         $p = isset($_GET['p']) ? $_GET['p'] : '';
         $allowed_pages = array('frontpage', 'flights', 'users');
 
+
+        // Se carga el header para todas las páginas.
+        $this->load('components/header');
+
+
         if($p=='') {
             $this->load('pages/frontpage');
         } else {
 
             if(in_array($p, $allowed_pages)) {
-                $this->load('components/header');
                 $this->load('pages/'.$p.'');
-                $this->load('components/footer');
             } else {
                 $this->load('pages/404');
             }
         }
+        // Se carga el footer para todas las páginas.
+
+        $this->load('components/footer');
+
 
 
     }
@@ -46,8 +53,27 @@ class TemplateController {
     }
 
 
-    public static function css($file) {
-        return '<link rel="stylesheet" href="public/css/'.$file.'.css">
+    public static function addRessource($file, $type, $external=false) {
+        $output = "";
+
+        if($type=='css') {
+
+        if($external) {
+            '<link rel="stylesheet" href="'.$file.'">
         ';
+        }
+        $output = '<link rel="stylesheet" href="statics/css/'.$file.'.css"/>
+        ';
+    } else {
+        if($external) {
+            $output = '<script src="'.$file.'">
+        ';
+        } else {
+            $output = '<script src="statics/js/'.$file.'.js"></script>
+            ';
+        }
+    }
+
+        return $output;
     }
 }
