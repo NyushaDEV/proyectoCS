@@ -11,6 +11,10 @@
     <title><?= SITENAME; ?></title>
 </head>
 <body>
+
+<?php $this->load('components/navbar'); ?>
+
+
 <!-- Container -->
 <div class="container">
 

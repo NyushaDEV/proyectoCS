@@ -1,5 +1,7 @@
 body {
-  background: #d22536;
+  background: url(../images/bg.jpg) 50% 42% no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   color: #fff;
 }
 .fp-search {
