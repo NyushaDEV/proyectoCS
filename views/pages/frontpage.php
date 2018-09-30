@@ -12,7 +12,6 @@
 
     <div class="row">
 
-
                 <div class="col">
                     <form action="">
                         <h4>Origen</h4>

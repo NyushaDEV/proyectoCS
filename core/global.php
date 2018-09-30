@@ -17,10 +17,6 @@ function __autoload( $class_name ) {
 /**
  * Se instancia las clases
  */
+$db = new DataBaseController();
 $core = new CoreController();
 $template = new TemplateController($core);
-
-
-
-
-
