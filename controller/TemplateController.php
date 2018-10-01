@@ -69,7 +69,7 @@ class TemplateController {
             $output = '<script src="'.$file.'"></script>
         ';
         } else {
-            $output = '<script src="statics/js/'.$file.'.js"></script>
+            $output = '<script src="statics/js/'.$file.'.js?v='.rand(0, 555).'"></script>
             ';
         }
     }

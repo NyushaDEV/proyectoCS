@@ -1,6 +1,8 @@
 <?php
-define('root_path', dirname(__DIR__), true);
 define('SITENAME', 'Córdoba AirWays');
+define('root_path', dirname(__DIR__), true);
+define('DS', DIRECTORY_SEPARATOR);
+define('CWD', str_replace('core' . DS, '',dirname(__FILE__) . DS));
 /**
  * 
  * Autoloader que sirve para autocargar clases sin tener que definir la ruta de cada archivo de las clase.
@@ -9,9 +11,9 @@ define('SITENAME', 'Córdoba AirWays');
 */ 
 function __autoload( $class_name ) {
 	
-	$file_name = 'controller/' .  $class_name . '.php';
+	$file_name =   CWD . '//controller/' .  $class_name . '.php';
 	if( file_exists( $file_name ) ) {
-		require $file_name;
+		require_once $file_name;
 	} 
 }
 /**
@@ -19,4 +21,3 @@ function __autoload( $class_name ) {
  */
 $db = new DataBaseController();
 $core = new CoreController();
-$template = new TemplateController($core);
