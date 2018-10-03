@@ -1,3 +1,27 @@
+<?php
+    $vuelos = new VuelosController();
+    $vuelos->buscar();
+    $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
+
+?>
+ <style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+  </style>
+
 <div id="search">
 
 <div class="row">
@@ -13,18 +37,31 @@
     <div class="row">
 
                 <div class="col">
-                    <form action="">
+                    <form  method="post" id="aeropuertos" action="">
                         <h4>Origen</h4>
+
+
                         <div class="form-group">
-                            <input id="origen" placeholder="Aeropuerto de salida..." type="text" autofocus class="form-control fp-search" >
+                        <div class="ui-widget">
+                        <select name="aeropuerto_origen" id="combobox_origen">
+                            <option value="">Select one...</option>
+
+                            <?php foreach($airports as $airport) {  ?>
+                            <option value="<?= $airport->nombre; ?>"><?= $airport->nombre; ?></option>
+                            <?php } //end foreach; ?>
+
+                        </select>
                         </div>
+                        
+                        </div>
+                       
 
                 </div>
                 <div class="col">
                     
                         <h4>Destino</h4>
                         <div class="form-group">
-                            <input placeholder="Aeropuerto de llegada..." type="text" autofocus class="form-control fp-search" >
+                            <input id="destino" name="destino" placeholder="Aeropuerto de llegada..." type="text" autofocus class="form-control fp-search" >
                         </div>
 
                 </div>
@@ -33,7 +70,7 @@
 
 
                         <div class="form-group">
-                                <button class="btn btn-secondary">
+                                <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
                                     Buscar vuelo
                                 </button>
                             </div>

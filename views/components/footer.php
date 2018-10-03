@@ -15,12 +15,10 @@
 
 
 </div> <!-- ./container -->
-<?= $this->addRessource('https://code.jquery.com/jquery-3.3.1.min.js', 'js', true); ?>
-<?= $this->addRessource('jquery-ui.min', 'js'); ?>
+<?= $this->addRessource('jquery-3.3.1.min', 'js'); ?>
+    <?= $this->addRessource('jquery-ui.min', 'js'); ?>
+    <?= $this->addRessource('autocomplete', 'js'); ?>
 <?= $this->addRessource('app', 'js'); ?>
 
-
-
-<script src=""></script>
 </body>
 </html>

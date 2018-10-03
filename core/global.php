@@ -3,6 +3,7 @@ define('SITENAME', 'Córdoba AirWays');
 define('root_path', dirname(__DIR__), true);
 define('DS', DIRECTORY_SEPARATOR);
 define('CWD', str_replace('core' . DS, '',dirname(__FILE__) . DS));
+
 /**
  * 
  * Autoloader que sirve para autocargar clases sin tener que definir la ruta de cada archivo de las clase.

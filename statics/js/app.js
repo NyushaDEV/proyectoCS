@@ -1,37 +1,67 @@
-$( document ).ready(function() {
+$(document).ready(function () {
 
-  var AirportsDepart = []; 
-  window.onload = function() {
-    cargarRutas();
+  var AirportsDepart = [], AirportsArrival = [];
+
+  window.onload = function () {
   };
 
-
-  function cargarRutas() {
+/**
+ * Llamada en ajax que carga las rutas del Aeropuerto de origen
+ */
+/*
+  function cargarRutasOrigen() {
     $.ajax({
-      
-        url: "ajax/rutas.php",
-        data: {  },
-        datatype: 'json',
+
+      url: "ajax/ruta_origen.php",
+      data: {},
     }).done(function (data) {
+      let rutas = JSON.parse(data);
 
-      let rutas = $.parseJSON(data);
+      $.each(rutas[0], function (i, ele) {
+       AirportsDepart[i] = ele.nombre; 
+      });
 
-
-      console.log(rutas[0][0]);
-
-      $( "#origen" ).autocomplete({
-        source: ""
+      $("#origen").autocomplete({
+        source: AirportsDepart
       });
 
     }).fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-      
+      console.log(textStatus);
+
     });
 
   }
+*/
+/**
+ * Llamada en ajax que carga las rutas del Aeropuerto de destino
+ */
+/*
+function cargarRutasDestino() {
 
+  $.ajax({
+    type: 'POST',
+    url: "ajax/ruta_destino.php",
+    dataType: 'json',
+    data: {
+      origen: $('input#origen').val()
+    },
+  }).done(function (data) {
+
+
+    $.each(data, function(i, ele) {
+      AirportsArrival[i] = ele[0].nombre;
+    });
+
+
+    $("#destino").autocomplete({
+      source: AirportsArrival
+    });
     
-      
+  }).fail(function ( jqXHR, textStatus, msg) {
+    console.log(msg);
 
-      console.log(AirportsDepart);
+  });
+
+}
+*/
 });

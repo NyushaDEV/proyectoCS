@@ -6,8 +6,9 @@
 class TemplateController {
 
     private $gcore; // global core
-    public function __construct($core) {
+    public function __construct($core, $db) {
         $this->gcore = $core;
+        $this->db = $db;
         $this->pageLoader();
     }
 
@@ -15,24 +16,34 @@ class TemplateController {
         $p = isset($_GET['p']) ? $_GET['p'] : '';
         $allowed_pages = array('frontpage', 'flights', 'users');
 
+        $GLOBALS['load_components'] = true;
 
+
+        
         // Se carga el header para todas las páginas.
         $this->load('components/header');
+        
 
 
         if($p=='') {
+
             $this->load('pages/frontpage');
         } else {
 
             if(in_array($p, $allowed_pages)) {
+                $GLOBALS['load_components'] = true;
                 $this->load('pages/'.$p.'');
             } else {
+                $GLOBALS['load_components'] = false;
+
                 $this->load('pages/404');
             }
         }
         // Se carga el footer para todas las páginas.
 
-        $this->load('components/footer');
+        if($GLOBALS['load_components']) {
+            $this->load('components/footer');
+        }
 
 
 

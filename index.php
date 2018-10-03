@@ -1,3 +1,3 @@
 <?php
 require_once 'core/global.php';
-$template = new TemplateController($core);
+$template = new TemplateController($core, $db);
