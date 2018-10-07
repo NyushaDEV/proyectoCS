@@ -2,6 +2,8 @@ body {
   background: url(../images/bg.jpg) 50% 42% no-repeat;
   background-size: cover;
   background-attachment: fixed;
+}
+#search {
   color: #fff;
 }
 .fp-search {
@@ -11,6 +13,7 @@ body {
   outline: none !important;
 }
 footer {
+  color: #fff;
   height: 80px;
   position: absolute;
   bottom: 10px;

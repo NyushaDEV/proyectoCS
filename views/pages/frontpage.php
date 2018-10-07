@@ -1,11 +1,11 @@
 <?php
-    $vuelos = new VuelosController();
-    $vuelos->buscar();
-    $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
+$vuelos = new VuelosController();
+$vuelos->buscar();
+$airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
 
 ?>
- <style>
-  .custom-combobox {
+<style>
+    .custom-combobox {
     position: relative;
     display: inline-block;
   }
@@ -24,65 +24,56 @@
 
 <div id="search">
 
-<div class="row">
+    <div class="row">
         <div class="col">
         </div>
         <div class="col">
-        <h2>Buscar vuelo...</h2>
+            <h2>Buscar vuelo...</h2>
         </div>
         <div class="col"></div>
     </div>
 
-
     <div class="row">
 
-                <div class="col">
-                    <form  method="post" id="aeropuertos" action="">
-                        <h4>Origen</h4>
+        <div class="col">
+            <form method="post" id="aeropuertos" action="">
+                <h4>Origen</h4>
 
 
-                        <div class="form-group">
-                        <div class="ui-widget">
-                        <select name="aeropuerto_origen" id="combobox_origen">
+                <div class="form-group">
+                    <div class="ui-widget">
+                        <select  name="aeropuerto_origen" id="combobox_origen">
                             <option value="">Select one...</option>
 
-                            <?php foreach($airports as $airport) {  ?>
-                            <option value="<?= $airport->nombre; ?>"><?= $airport->nombre; ?></option>
+                            <?php foreach ($airports as $airport) {?>
+                            <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?></option>
                             <?php } //end foreach; ?>
 
                         </select>
-                        </div>
-                        
-                        </div>
-                       
-
+                    </div>
                 </div>
-                <div class="col">
-                    
-                        <h4>Destino</h4>
-                        <div class="form-group">
-                            <input id="destino" name="destino" placeholder="Aeropuerto de llegada..." type="text" autofocus class="form-control fp-search" >
-                        </div>
+        </div>
+        
+        <div class="col">
+            <h4>Destino</h4>
+            <div class="form-group">
+            <select  name="aeropuerto_destino" id="combobox_destino">
+                            <option value="">Select one...</option>
+                            <?php foreach ($airports as $airport) {?>
+                            <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?></option>
+                            <?php } //end foreach; ?>
+                        </select>
+            </div>
+        </div>
 
-                </div>
-                    
-                <div class="col col-md-12">
+        <div class="col col-md-12">
+            <div class="form-group">
+                <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
+                    Buscar vuelo
+                </button>
+            </div>
+            </form>
+        </div>
 
-
-                        <div class="form-group">
-                                <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
-                                    Buscar vuelo
-                                </button>
-                            </div>
-                        </form>
-</div>
-
-          
-                
-            
     </div>
-
-
 </div>
-
-

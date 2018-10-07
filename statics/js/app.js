@@ -3,65 +3,13 @@ $(document).ready(function () {
   var AirportsDepart = [], AirportsArrival = [];
 
   window.onload = function () {
+    openModal();
+    
   };
 
-/**
- * Llamada en ajax que carga las rutas del Aeropuerto de origen
- */
-/*
-  function cargarRutasOrigen() {
-    $.ajax({
-
-      url: "ajax/ruta_origen.php",
-      data: {},
-    }).done(function (data) {
-      let rutas = JSON.parse(data);
-
-      $.each(rutas[0], function (i, ele) {
-       AirportsDepart[i] = ele.nombre; 
-      });
-
-      $("#origen").autocomplete({
-        source: AirportsDepart
-      });
-
-    }).fail(function (jqXHR, textStatus) {
-      console.log(textStatus);
-
-    });
-
+  function openModal(modal) {
+    let html = '<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> <div class="modal-dialog" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLabel">Iniciar sesión</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"><form> <div class="form-group"> <label for="exampleInputEmail1">E-mail</label> <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></div> <div class="form-group"> <label for="exampleInputPassword1">Contraseña</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> </div> </form></div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-dismiss="modal">Registrarse</button> <button type="button" class="btn btn-primary">Entrar</button> </div> </div> </div> </div>';
+    $('.container').append(html);
   }
-*/
-/**
- * Llamada en ajax que carga las rutas del Aeropuerto de destino
- */
-/*
-function cargarRutasDestino() {
 
-  $.ajax({
-    type: 'POST',
-    url: "ajax/ruta_destino.php",
-    dataType: 'json',
-    data: {
-      origen: $('input#origen').val()
-    },
-  }).done(function (data) {
-
-
-    $.each(data, function(i, ele) {
-      AirportsArrival[i] = ele[0].nombre;
-    });
-
-
-    $("#destino").autocomplete({
-      source: AirportsArrival
-    });
-    
-  }).fail(function ( jqXHR, textStatus, msg) {
-    console.log(msg);
-
-  });
-
-}
-*/
 });

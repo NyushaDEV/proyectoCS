@@ -11,10 +11,7 @@
     <title><?= SITENAME; ?></title>
 </head>
 <body>
-<?php if($GLOBALS['load_components']) {
-    $this->load('components/navbar');
-}
-?>
+<?php  $this->load('components/navbar'); ?>
 
 
 <!-- Container -->

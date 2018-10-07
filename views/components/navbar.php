@@ -26,6 +26,6 @@
 
 
   <div class="navbar-text">
-        <a href="">Iniciar sesión</a>
+        <a data-toggle="modal" data-target="#loginModal" href="#">Iniciar sesión</a>
   </div>
 </nav>
