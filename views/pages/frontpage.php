@@ -4,6 +4,16 @@ $vuelos->buscar();
 $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
 
 ?>
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLabel">Iniciar sesión</h5> <button type="submit" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body">
+<form method="post" id="loginform" action="ajax/login.php">
+<div class="form-group"> <label for="exampleInputEmail1">E-mail</label>
+<input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></div>
+<div class="form-group"> <label for="exampleInputPassword1">Contraseña</label>
+<input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+</div> </form></div> <div class="modal-footer">
+ <button type="button" class="btn btn-secondary" data-dismiss="modal">Registrarse</button>
+ <button id="login" type="submit" class="btn btn-primary">Entrar</button> </div> </div> </div> </div>
 <style>
     .custom-combobox {
     position: relative;
@@ -35,7 +45,8 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
 
     <div class="row">
 
-        <div class="col">
+    
+        <div class="col-md-6">
             <form method="post" id="aeropuertos" action="">
                 <h4>Origen</h4>
 
@@ -53,8 +64,8 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
                     </div>
                 </div>
         </div>
-        
-        <div class="col">
+
+        <div class="col-md-6">
             <h4>Destino</h4>
             <div class="form-group">
             <select  name="aeropuerto_destino" id="combobox_destino">
@@ -65,7 +76,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
                         </select>
             </div>
         </div>
-
+    
         <div class="col col-md-12">
             <div class="form-group">
                 <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
@@ -75,5 +86,5 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
             </form>
         </div>
 
-    </div>
+    </div> <!--/.row-->
 </div>
