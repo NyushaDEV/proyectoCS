@@ -20,5 +20,11 @@ function __autoload( $class_name ) {
 /**
  * Se instancia las clases
  */
+//require 'model/User.php';
+
+
 $db = new DataBaseController();
 $core = new CoreController();
+
+//$users = new User();
+//var_dump($users->data('admin@test.com', '12345')->email);

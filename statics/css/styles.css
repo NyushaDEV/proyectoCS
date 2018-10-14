@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto');
 body {
-  background: url(../images/bg.jpg) 50% 42% no-repeat;
+  background: url(../images/bg_2.jpg) 50% 42% no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  font-family: "Roboto", sans-serif;
 }
 #search {
   color: #fff;
@@ -22,4 +24,23 @@ footer {
 }
 #search {
   margin-top: 100px;
+  width: 100%;
+  padding: 50px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.errors {
+  margin: 5px 0;
+}
+.errors .error {
+  font-size: .9em;
+  color: #dc3545;
+}
+input.fechavuelo {
+  background: #d22536;
+  border: none;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  width: 80%;
 }
