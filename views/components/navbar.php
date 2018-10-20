@@ -10,7 +10,7 @@
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="booking">Reservar</a>
+        <a class="nav-link" href="reserva">Reserva</a>
       </li>
 
       <li class="nav-item">
@@ -24,8 +24,13 @@
     </ul>
   </div>
 
-
   <div class="navbar-text">
+    <?php //$core->l('test', 'hola!', array('class' => 'btn', 'target' => '_blank')); ?>
+<?php if(!$usermodel->isLogged()): ?>
         <a data-toggle="modal" data-target="#loginModal" href="#">Iniciar sesión</a>
+<?php else: ?>
+<a  href="<?= WWW; ?>/ajax/logout.php">Desconectarse</a>
+<?php endif; ?>
   </div>
+
 </nav>

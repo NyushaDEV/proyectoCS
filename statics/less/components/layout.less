@@ -2,7 +2,7 @@
 
 
 body {
-    background: url(../images/bg_2.jpg) 50% 42% no-repeat;
+    background: url(../images/bg.jpg) 50% 42% no-repeat;
     background-size: cover;
     background-attachment: fixed;
     font-family: "Roboto", sans-serif;
@@ -12,19 +12,37 @@ body {
     color: @text-color;
 }
 
+h1 {
+    font-size: 1.8em;
+}
+h2 {
+    font-size: 1.5em;
+}
+h3 {
+    font-size: 1.3em;
+}
+h4 {
+    font-size: 1.1em;
+}
+
 .fp-search {
     color: #444;
     &:focus {
         outline: none !important;
     }
 }
+.content {
+    margin-top: 40px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #fff;
+    min-height: 400px;
+}
 
 
 footer {
     color: @text-color;
     height: 80px;
-    position: absolute;
-    bottom: 10px;
     width: 80%; 
     margin: auto;
 }

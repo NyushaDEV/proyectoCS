@@ -7,17 +7,17 @@ $(document).ready(function () {
     $("#fechasalida").datepicker({ minDate: 0, maxDate: "+12M +10D" });
     $('input[name="tipo"]').on('change', idayVuelta);
 
-
-
     $('#showFlightDate').on('click', function(event) {
       console.log($('#inpt_combobox_origen').val());
       event.preventDefault();
-      if($('#inpt_combobox_origen') !=='' && $($('#inpt_combobox_destino')).val() !=='') {
+      if($('#inpt_combobox_origen').val() !=='' && $($('#inpt_combobox_destino')).val() !=='') {
         $('.hidden-flight-wrapper').removeClass('d-none');
       } else {
         console.log('Empty!');
       }
     });
+
+    
   };
 
   function openModal(modal) {
@@ -36,9 +36,10 @@ $(document).ready(function () {
 
 
   $('#login').on('click', function (e) {
-    e.preventDefault();
-    console.log('kkekekeke');
 
+    let errorEmail = false;
+    let errorPassword = false;
+    e.preventDefault();
     $.ajax({
       url: 'ajax/login.php',
       type: 'post',
@@ -47,18 +48,37 @@ $(document).ready(function () {
     })
 
       .done(function (data) {
+        console.log(data);
+
+        $('.errors').empty("");
+
+        if(!errorEmail) {
+          $('#loginEmail').removeClass('is-invalid');
+        }
+        if(!errorPassword) {
+          $('#loginPassword').removeClass('is-invalid');
+        }
 
         if ($('#loginEmail').val() == '') {
+          errorEmail = true;
           console.log(data.message['email']);
           $('#loginEmail').addClass('is-invalid');
           $('#loginEmail').after('<div class="errors"><span class="error">'+data.message['email']+'</span></div>');
         }
         if($('#loginPassword').val() == '') {
+          errorPassword = true;
           $('#loginPassword').addClass('is-invalid');
           $('#loginPassword').after('<div class="errors"><span class="error">'+data.message['pass']+'</span></div>');
-
         }
-        console.log(data);
+        if(data.status=='no_account') {
+          console.log(data.message['no_account']);
+          $('#error-no-account').remove();
+          $('.modal-body').append('<div id="error-no-account" class="alert alert-warning">'+data.message['no_account']+'');
+        }
+        if(data.status == 'success') {
+          $('#loginModal').slideUp();
+          window.location.href = 'frontpage';
+        }
       })
 
       .fail(function (x, status, msg) {

@@ -1,8 +1,10 @@
 <?php
+session_start();
 define('SITENAME', 'Córdoba AirWays');
 define('root_path', dirname(__DIR__), true);
 define('DS', DIRECTORY_SEPARATOR);
 define('CWD', str_replace('core' . DS, '',dirname(__FILE__) . DS));
+define('WWW',  'http://' . $_SERVER['SERVER_NAME']);
 
 /**
  * 
@@ -18,13 +20,20 @@ function __autoload( $class_name ) {
 	} 
 }
 /**
- * Se instancia las clases
+ * Se instancia las clases de los modelos
  */
-//require 'model/User.php';
-
+require_once CWD . 'model/User.php';
+$vuelos = new VuelosController();
 
 $db = new DataBaseController();
 $core = new CoreController();
 
-//$users = new User();
+$usermodel = new User();
+$users = new UserController($usermodel);
+
+// no cargamos las vistas cuando se trata de archivos que están en el directorio "ajax"
+if(dirname($_SERVER['REQUEST_URI']) !== '/ajax') {
+    $template = new TemplateController($core, $db, $users);
+}
+
 //var_dump($users->data('admin@test.com', '12345')->email);

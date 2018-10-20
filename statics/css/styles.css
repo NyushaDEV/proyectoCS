@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto');
 body {
-  background: url(../images/bg_2.jpg) 50% 42% no-repeat;
+  background: url(../images/bg.jpg) 50% 42% no-repeat;
   background-size: cover;
   background-attachment: fixed;
   font-family: "Roboto", sans-serif;
@@ -8,17 +8,34 @@ body {
 #search {
   color: #fff;
 }
+h1 {
+  font-size: 1.8em;
+}
+h2 {
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.3em;
+}
+h4 {
+  font-size: 1.1em;
+}
 .fp-search {
   color: #444;
 }
 .fp-search:focus {
   outline: none !important;
 }
+.content {
+  margin-top: 40px;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: #fff;
+  min-height: 400px;
+}
 footer {
   color: #fff;
   height: 80px;
-  position: absolute;
-  bottom: 10px;
   width: 80%;
   margin: auto;
 }
@@ -26,8 +43,6 @@ footer {
   margin-top: 100px;
   width: 100%;
   padding: 50px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
 }
 .errors {
   margin: 5px 0;
@@ -35,6 +50,9 @@ footer {
 .errors .error {
   font-size: .9em;
   color: #dc3545;
+}
+#search input {
+  padding: 5px;
 }
 input.fechavuelo {
   background: #d22536;

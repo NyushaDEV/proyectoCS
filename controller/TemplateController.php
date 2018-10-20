@@ -5,22 +5,27 @@
  */
 class TemplateController {
 
-    private $gcore; // global core
-    public function __construct($core, $db) {
-        $this->gcore = $core;
+    public function __construct($core, $db, $users) {
+
+
+        $this->core = $core;
         $this->db = $db;
+        $this->users = $users;
         $this->pageLoader();
+
+        global $users;
+
     }
 
     private function pageLoader() {
+        global $users;
         $p = isset($_GET['p']) ? $_GET['p'] : '';
-        $allowed_pages = array('frontpage', 'flights', 'users');
+        $allowed_pages = array('frontpage', 'flights', 'users', 'reserva');
         
         // Se carga el header para todas las páginas.
         $this->load('components/header');
-        
-        if($p=='') {
 
+        if($p=='') {
             $this->load('pages/frontpage');
         } else {
 
@@ -36,6 +41,8 @@ class TemplateController {
     }
 
     public function load($template, $page=false) {
+        global $vuelos;
+        global $usermodel, $core;
         $path =  root_path . '/views';
         
         $file = $path . '/' . $template . '.php';
@@ -45,7 +52,7 @@ class TemplateController {
             include($file);
             ob_end_flush();
         } else {
-            $this->gcore->sysMessage('System Error: ' . $file . ' not found!');
+            $this->core->sysMessage('System Error: ' . $file . ' not found!');
         }
     }
 

@@ -1,8 +1,8 @@
 <?php
-$vuelos = new VuelosController();
 $vuelos->buscar();
-$airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
+$airports = $this->db->q('SELECT * FROM aeropuertos');
 
+var_dump($_SESSION);
 ?>
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -60,7 +60,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
         <div class="col">
         </div>
         <div class="col">
-            <h1>Buscar vuelo...</h1>
+            <h1>Buscar vuelos...</h1>
         </div>
         <div class="col"></div>
     </div>
@@ -77,7 +77,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
                             <option value="">Select one...</option>
 
                             <?php foreach ($airports as $airport) {?>
-                                <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?>s</option>
+                                <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?> (<?= $airport->codigo; ?>)</option>
                             <?php } //end foreach; ?>
 
                         </select>
@@ -85,7 +85,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
                 </div>
 
                 <div class="form-group">
-                    <a id="showFlightDate" class="btn btn-secondary" href="">Buscar</a>
+                    <a id="showFlightDate" class="btn btn-secondary" href="">Continuar</a>
                 </div>
         </div>
 
@@ -95,7 +95,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
                 <select name="aeropuerto_destino" id="combobox_destino">
                     <option value="">Select one...</option>
                     <?php foreach ($airports as $airport) {?>
-                    <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?></option>
+                    <option value="<?=$airport->nombre;?>"><?=$airport->nombre;?> (<?= $airport->codigo; ?>)</option>
                     <?php } //end foreach; ?>
                 </select>
             </div>
@@ -106,31 +106,39 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
 
 <div class="col-xs-6 col-md-6">
     <div class="hidden-flight-wrapper d-none">
-
+            <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked type="radio" name="tipo" id="radioIda" value="ida">
+                    <label class="form-check-label" for="radioIda">Solo ida</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tipo" id="idayVuelta" value="idavuelta">
+                    <label class="form-check-label" for="idayVuelta">Ida y vuelta</label>
+                </div>
+                
             <div class="form-group">
-                    <h2>Fecha de Salida</h2>
-                    <input class="fechavuelo" type="text" placehoder="Fecha de salida" id="fechasalida">
+                    <label for="fechasalida">Fecha de Salida</label>
+                    <input  name="fechasalida" class="form-control" type="text" placehoder="Fecha de salida" id="fechasalida">
                     
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" checked type="radio" name="tipo" id="radioIda" value="ida">
-                <label class="form-check-label" for="radioIda">Solo ida</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="tipo" id="idayVuelta" value="idavuelta">
-                <label class="form-check-label" for="idayVuelta">Ida y vuelta</label>
-            </div>
+           
         </div>
     </div>
         
         <div class="col-xs-6 col-md-6">
     <div class="hidden-flight-wrapper d-none">
             <div class="form-group">
-                    <div id="fechaderegreso" class="d-none">
-                        <h2>Fecha de regreso</h2>
-                        <input class="fechavuelo " type="text" placehoder="Fecha de regreso" id="fecharegreso">
+                    <div id="fechaderegreso" class="d-none"><br>
+                        <label for="fecharegreso">Fecha de regreso</label>
+                        <input name="fecharegreso" class="form-control" type="text" placehoder="Fecha de regreso" id="fecharegreso">
                     </div>
                 </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-2 hidden-flight-wrapper d-none">
+        <div class="form-group">
+            <label for="Adultos">Adultos</label>
+            <input type="number" name="adultos" class="form-control" value="1"  min="0" max="10">
         </div>
     </div>
 
@@ -138,7 +146,7 @@ $airports = $this->db->q('SELECT id, nombre FROM aeropuertos');
             <div class="hidden-flight-wrapper d-none">
 
             <div class="form-group">
-                <button name="buscarvuelos" id="buscarVuelo" class="btn btn-danger">
+                <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
                     Buscar vuelo
                 </button>
             </div>

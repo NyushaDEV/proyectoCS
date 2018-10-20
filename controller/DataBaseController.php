@@ -4,7 +4,7 @@ class DataBaseController {
 
     private $user = 'root';
     private $pass = '';
-    private $dbname = 'cordairways';
+    private $dbname = 'proyectodaw';
     private $host = 'proyectocs.io';
     private $pdo;
 
