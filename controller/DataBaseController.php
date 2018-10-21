@@ -35,5 +35,4 @@ class DataBaseController {
         $q->execute($data);
         return $q->fetchAll(PDO::FETCH_OBJ);
       }
-
-}
+    }

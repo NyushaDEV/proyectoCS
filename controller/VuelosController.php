@@ -1,33 +1,72 @@
 <?php
 
 
-class VuelosController {
+class VuelosController
+{
 
-    public function __construct() {
-        $this->reservarVuelo();
+    private $db;
+    public function __construct()
+    {
+        global $db;
+        $this->db = $db;
     }
 
-        public function reservarVuelo() {
-            if(isset($_POST['reservar'])) {
-                echo "eeeeee";
-            }
-        }
+    public function mostrarVuelos() {
+        global $db, $core;
+        if (isset($_POST['buscar_fecha'])) {
+            $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen', array(
+                'origen' => $_POST['id_ruta']
+            ));
 
-    public function buscar() {
+            $output = '<table class="table text-center">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hora de salida</th>
+                  <th scope="col">Hora de llegada</th>
+                  <th scope="col">Precio </th>
+                  <th scope="col">Asientos</th>
+                  <th scope="col">Reservar</th>
+                </tr>
+              </thead><tbody>';
+            foreach ($vuelos as $vuelo) {
+                if( $core->formatDate($vuelo->fecha_salida, 'd-m-Y') == $_POST['fecha'] && $core->formatDate($vuelo->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
+
+                    $fecha_dia = date('d', $vuelo->fecha_salida);
+                    $fecha_mes = date('m', $vuelo->fecha_salida);
+                    $fecha_year = date('Y', $vuelo->fecha_salida);
+
+                    $reservar = $vuelo->asientos==0 ? '<a href="#" class="btn btn-secondary disabled">No hay plazas</a>': '<a href="" class="btn btn-primary">Reservar</a>';
+                    $output .= '<tr>
+                <td>' . $core->formatDate($vuelo->fecha_salida, 'H:i') . '</td>
+                <td>' . $core->formatDate($vuelo->fecha_llegada, 'H:i') . '</td>
+                      <td><span class="badge badge-success price">' . $vuelo->precio_inicial . ' €</span></td>
+                      <td>' . $vuelo->asientos . '</td>
+                      <td>'.$reservar.'</td>
+                    </tr>';
+
+                }
+            }
+            echo $output;
+        }
+    }
+
+
+    public function buscar()
+    {
         global $core;
-        $ajax=false;
-        if(isset($_POST['buscarvuelos'])) {
+        $ajax = false;
+        if (isset($_POST['buscarvuelos'])) {
             $origen = $_POST['aeropuerto_origen'];
             $destino = $_POST['aeropuerto_destino'];
             $fecha_salida = $_POST['fechasalida'];
-            if(isset($_POST['fecharegreso'])) {
+            if (isset($_POST['fecharegreso'])) {
                 $fecha_regreso = $_POST['fecharegreso'];
             }
 
             $adultos = $_POST['adultos'];
 
-            if(!empty($origen) || !empty($destino) || !empty($fecha_salida) || !empty($adultos)) {
-                (array) $_SESSION['vuelo'] = $_POST;
+            if (!empty($origen) || !empty($destino) || !empty($fecha_salida) || !empty($adultos)) {
+                (array)$_SESSION['vuelo'] = $_POST;
                 $core->redirect('reserva');
             } else {
                 $ajax['mensaje'] = 'Campos vacios';
@@ -38,43 +77,73 @@ class VuelosController {
         }
     }
 
-        public function loadSavedResearch() {
-            global $db;
-            $output ="<h1>Reservar vuelo</h1>";
-            if(isset($_SESSION['vuelo'])) {
-                $output .= '<h2>'. $_SESSION['vuelo']['aeropuerto_origen'] . ' - '. $_SESSION['vuelo']['aeropuerto_destino'].'</h2>';
+    public function loadSavedResearch() {
+        global $db, $core;
+        $output = '';
+        echo "<h1>Reservar vuelo</h1>";
+        //var_dump($_SESSION);
+        if (isset($_SESSION['vuelo'])) {
+            echo '<h2>' . $_SESSION['vuelo']['aeropuerto_origen'] . ' - ' . $_SESSION['vuelo']['aeropuerto_destino'] . '</h2>';
 
-                $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
+            $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
                 array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
-                // select idruta
-                $idruta = $db->q('SELECT id FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id))[0]->id;
-                $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen',
-                array('origen' => $idruta));
+            // select idruta
+            $idruta = $db->q('SELECT id FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id))[0]->id;
+            $busqueda_fecha = explode('/', $_SESSION['vuelo']['fechasalida']);
+            $busqueda_fecha_mes = $busqueda_fecha[0];
+            $busqueda_fecha_dia = $busqueda_fecha[1];
+            $busqueda_fecha_year = $busqueda_fecha[2];
 
-                $output .= "<p>Fechas:</p>";
+            $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen', array(
+                'origen' => $idruta
+            ));
+            echo '<div class="row">';
 
-                foreach($vuelos as $result) {
-                    $output .= '<form action="" method="post">';
-                    $output .='<input type="hidden" value="'.$id.'" name="hidden_idvuelo">';
-                    $output .= "<p>Fecha salida: $result->fecha_salida - Quedan: $result->asientos asientos</p>";
-                    $output .= "<p>Fecha llegada: $result->fecha_llegada </p>";
-                    $output .= "<p>Precio <span class='badge badge-success price'>$result->precio_inicial €</span> </p>";
-                    if($result->asientos < 10 && $result->asientos > 0) {
-                        $output .='<div class="errors"><span class="error">¡Quedan menos de 10 asientos!</span></div>';
-                    }
-                    if($result->asientos==0) {
-                        $output .= '<button disabled name="reservar" class="btn btn-danger">No puedes reservar este vuelo</button>';
-                        $output .='<div class="errors"><span class=" error">No quedan asientos para este vuelo</span></div>';
 
-                    } else {
-                        $output .= '<button name="reservar" class="btn btn-primary">Reservar</button>';
-                    }
-                    $output .='</form>';
+            $repeats_date = null;
+            foreach ($vuelos as $result) {
+
+                if ($repeats_date !== $core->formatDate($result->fecha_salida, 'd-m-Y') &&  $core->formatDate($result->fecha_salida, 'd-m-Y') >  $core->formatDate(time(), 'd-m-Y')) {
+                    echo '<div class="col-md-3">
+                        <form method="post" action="">
+                        <input type="hidden" name="id_ruta" value="'.$idruta.'"/>
+                        <input type="hidden" name="codigo_aeropuerto" value="'.$id.'"/>
+                        <input type="hidden" name="fecha" value="'.$core->formatDate($result->fecha_salida, 'd-m-Y').'"/>
+                        <button name="buscar_fecha" class="btn btn-secondary">' . $core->formatDate($result->fecha_salida, 'l d F') . '</button>
+                        </form>
+                        </div>';
                 }
-
-            } else {
-                $output .= '<p>No tienes ninguna reserva hecha. </p> <a class="btn btn-primary" href="'.WWW.'">Buscar vuelos</a>';
-            }
-            echo $output;
+                $repeats_date = $core->formatDate($result->fecha_salida, 'd-m-Y');
+            }//end foreach */
+            echo '</div>'; // end .row
+        } else {
+            $output .= '<p>No tienes ninguna reserva hecha. </p> <a class="btn btn-primary" href="' . WWW . '">Buscar vuelos</a>';
         }
+
+        echo $output;
+
+        $this->mostrarVuelos();
+
+    }
+
+
+    public function _load_flights_helper()
+    {
+        $html = '<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Hora de salida</th>
+      <th scope="col">Hora de llegada</th>
+      <th scope="col">Reservar</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+   
+    
+  </tbody>
+</table>
+  ';
+        return $html;
+    }
 }

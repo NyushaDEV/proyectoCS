@@ -86,6 +86,38 @@ $(document).ready(function () {
       })
 
   });
+
+  function openModal(modalid) {
+      var html = '<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">\n' +
+          '    <div class="modal-dialog" role="document">\n' +
+          '        <div class="modal-content">\n' +
+          '            <div class="modal-header">\n' +
+          '                <h5 class="modal-title" id="exampleModalLabel">Iniciar sesión</h5> <button type="submit" class="close"\n' +
+          '                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>\n' +
+          '            </div>\n' +
+          '            <div class="modal-body">\n' +
+          '                <form method="post" id="loginform" action="ajax/login.php">\n' +
+          '                    <div class="form-group"> <label for="loginEmail">E-mail</label>\n' +
+          '                        <input name="email" type="email" class="form-control " id="loginEmail" aria-describedby="emailHelp"\n' +
+          '                            placeholder="Enter email">\n' +
+          '                        <div class="errors">\n' +
+          '\n' +
+          '                        </div>\n' +
+          '                        </div>\n' +
+          '                    <div class="form-group"> <label for="exampleInputPassword1">Contraseña</label>\n' +
+          '                        <input name="password" type="password" class="form-control" id="loginPassword"\n' +
+          '                            placeholder="Password">\n' +
+          '                    </div>\n' +
+          '                </form>\n' +
+          '            </div>\n' +
+          '            <div class="modal-footer">\n' +
+          '                <button type="button" class="btn btn-secondary" data-dismiss="modal">Registrarse</button>\n' +
+          '                <button id="login" type="submit" class="btn btn-primary">Entrar</button> </div>\n' +
+          '        </div>\n' +
+          '    </div>\n' +
+          '</div>';
+      $('body').append(html);
+  }
 });
 
 

@@ -33,8 +33,8 @@ class CoreController {
      * @param $timestamp
      * @return false|string
      */
-    public function formatDate($timestamp) {
-        return date('d-m-Y H:i', $timestamp);
+    public function formatDate($timestamp, $params) {
+        return date($params, $timestamp);
     }
 
 }
