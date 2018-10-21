@@ -1,7 +1,6 @@
 <?php
 $vuelos->buscar();
 $airports = $this->db->q('SELECT * FROM aeropuertos');
-
 var_dump($_SESSION);
 ?>
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
