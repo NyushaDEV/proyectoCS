@@ -20,7 +20,7 @@ class TemplateController {
     private function pageLoader() {
         global $users;
         $p = isset($_GET['p']) ? $_GET['p'] : '';
-        $allowed_pages = array('frontpage', 'flights', 'users', 'reserva');
+        $allowed_pages = array('frontpage', 'flights', 'users', 'reserva', 'booking');
         
         // Se carga el header para todas las páginas.
         $this->load('components/header');

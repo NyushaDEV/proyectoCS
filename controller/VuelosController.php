@@ -5,22 +5,28 @@ class VuelosController
 {
     private $db;
 
-    public function __construct()
+    private $flightmodel;
+
+    public function __construct($flightmodel)
     {
+        $this->flightmodel = $flightmodel;
         global $db;
         $this->db = $db;
 
     }
 
-    public function mostrarVuelos()
+    public function displayFlights()
     {
 
         global $db, $core;
         $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
             array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
         // select idruta
-        $idruta = $db->q('SELECT id FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id))[0]->id;
+        $sql = $db->q('SELECT id, cod_aerop_origen, cod_aerop_destino FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id));
 
+        $idruta = $sql[0]->id;
+        $to = $sql[0]->cod_aerop_origen;
+        $from = $sql[0]->cod_aerop_destino;
         if (isset($_POST['buscar_fecha'])) {
             $fecha = str_replace('/', '-', $_POST['fecha']);
         } else {
@@ -50,7 +56,7 @@ class VuelosController
                 $fecha_mes = date('m', $vuelo->fecha_salida);
                 $fecha_year = date('Y', $vuelo->fecha_salida);
 
-                $reservar = $vuelo->asientos == 0 ? '<button  class="btn btn-secondary disabled">No hay plazas</button>' : '<form action="' . WWW . '/reserva&do=reservar&vuelo=' . $vuelo->idvuelo . '" method="post"><button name="reservar_vuelo" class="btn btn-primary">Reservar</button></form>';
+                $reservar = $vuelo->asientos == 0 ? '<button  class="btn btn-secondary disabled">No hay plazas</button>' : '<form action="' . WWW . '/booking&flight=' . $vuelo->idvuelo . '&from='.$from.'&to='.$to.'" method="post"><input type="hidden" name="id_vuelo" value="'.$vuelo->idvuelo.'"><button name="reservar_vuelo" class="btn btn-primary">Reservar</button></form>';
                 $textoreserva = $vuelo->asientos > 0 && $vuelo->asientos < 20 ? '<div><mark class="small">Quedan menos de 20 asientos para este vuelo!</mark></div>' : '';
                 $output .= '<tr>
                 <td>' . $core->formatDate($vuelo->fecha_salida, 'H:i') . '</td>
@@ -97,7 +103,7 @@ class VuelosController
         global $db, $core;
         $output = '';
 
-        $this->mostrarVuelos();
+        $this->displayFlights();
 
         echo "<h1>Reservar vuelo</h1>";
         if (isset($_SESSION['vuelo'])) {
@@ -116,8 +122,6 @@ class VuelosController
                 'origen' => $idruta
             ));
             echo '<div class="row">';
-
-
             $repeats_date = null;
             foreach ($vuelos as $result) {
 
@@ -140,36 +144,81 @@ class VuelosController
         }
 
         echo $output;
-
-        $this->reservar();
-
     }
 
 
-    public function reservar()
-    {
-        if (isset($_POST['reservar_vuelo']) && isset($_GET['do'])) {
-            $do = $_GET['do'];
-            if($do == 'rservar') {
-                var_dump($_POST);
+    public function booking() {
+        if (isset($_POST['reservar_vuelo']) && isset($_GET['flight']) || isset($_GET['flight'])) {
+            $flight_id = $_GET['flight'];
+            // Si el vuelo existe
+            if($this->flightmodel->get_flight_id($flight_id) !=='not_found') {
+                // Si hay más de un asiento
+                if($this->flightmodel->get_flight_seats($flight_id) > 0) {
+                     $this->createFlightForm(2, $_GET['from'], $_GET['to']);
+                }
             }
         }
+    }
+
+    public function createFlightForm($people=1, $from, $to) {
+        $output = '<h1>'.$this->flightmodel->get_airport_names($from, $to).'</h1>';
+        $output .= '<form id="flight_booking_form" action="" method="post">';
+        for ($i=1; $i <= $people; $i++) {
+            $output .= '<div class="form-group">';
+            $output .= '<h2>Información personal del pasajero ('.$i.')</h2>';
+            $output .= '<label for="Passanger_name_'.$i.'">Nombre</label>';
+            $output .= '<input id="Passanger_name_'.$i.'" class="form-control" name="passanger_name_'.$i.'">';
+            $output .= '</div>';
+            $output .= '<div class="form-group">';
+            $output .= '<label for="passanger_lastname_'.$i.'">Apellido(s)</label>';
+            $output .= '<input id="passanger_lastname_'.$i.'" class="form-control" name="passanger_lastname_'.$i.'">';
+            $output .= '</div>';
+
+            $output .= '<div class="form-group">';
+            $output .= '<label for="passanger_birthday_'.$i.'">Fecha de nacimiento</label>';
+            $output .= '<input id="passanger_birthday_'.$i.'" class="form-control" name="passanger_birthday_'.$i.'">';
+            $output .= '</div>';
+
+            if($i==1) {
+                $output .= '<div class="form-group">';
+                $output .= '<label for="passanger_lastname_'.$i.'">Número de teléfono</label>';
+                $output .= '<input id="passanger_phone_number" class="form-control" name="passanger_phonenumber">';
+                $output .= '</div>';
+            }
+
+            $output .= '<div class="form-group">';
+            $output .= '<label for="passanger_address_'.$i.'">Dirección</label>';
+            $output .= '<input id="passanger_address_'.$i.'" class="form-control" name="passanger_address_'.$i.'">';
+            $output .= '</div>';
+
+            $output .= '<div class="form-group">';
+            $output .= '<label for="passanger_postalcode_'.$i.'">Código postal</label>';
+            $output .= '<input id="passanger_postalcode_'.$i.'" class="form-control" name="passanger_postalcode_'.$i.'">';
+            $output .= '</div>';
+
+
+            $output .= '<div class="form-group">';
+            $output .= '<button class="btn btn-primary">Continuar</button>';
+            $output .= '</div>';
+        }
+        $output .= '</form>';
+        echo $output;
     }
 
     public function _load_flights_helper()
     {
         $html = '<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Hora de salida</th>
-      <th scope="col">Hora de llegada</th>
-      <th scope="col">Reservar</th>
-    </tr>
-  </thead>
-  <tbody>
-
-  </tbody>
-</table>';
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Hora de salida</th>
+              <th scope="col">Hora de llegada</th>
+              <th scope="col">Reservar</th>
+            </tr>
+          </thead>
+          <tbody>
+        
+          </tbody>
+        </table>';
         return $html;
     }
 }

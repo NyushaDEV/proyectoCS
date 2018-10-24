@@ -23,17 +23,16 @@ function __autoload( $class_name ) {
  * Se instancia las clases de los modelos
  */
 require_once CWD . 'model/User.php';
-$vuelos = new VuelosController();
+require_once CWD . 'model/Flight.php';
 
 $db = new DataBaseController();
 $core = new CoreController();
 
 $usermodel = new User();
+$fmodel = new Flight();
+$vuelos = new VuelosController($fmodel);
 $users = new UserController($usermodel);
-
 // no cargamos las vistas cuando se trata de archivos que están en el directorio "ajax"
 if(dirname($_SERVER['REQUEST_URI']) !== '/ajax') {
     $template = new TemplateController($core, $db, $users);
 }
-
-//var_dump($users->data('admin@test.com', '12345')->email);
