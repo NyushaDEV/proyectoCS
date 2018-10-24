@@ -40,6 +40,14 @@ $(document).ready(function () {
     let errorEmail = false;
     let errorPassword = false;
     e.preventDefault();
+    $ajax = $('#ajax');
+
+    $ajax.show();
+
+    $ajax.html('<img src="'+site_url+'/statics/images/loading.svg">Iniciando sesión...');
+    $('#loginform').hide();
+
+
     $.ajax({
       url: 'ajax/login.php',
       type: 'post',
@@ -47,8 +55,11 @@ $(document).ready(function () {
       data: $('#loginform').serialize()
     })
 
+
       .done(function (data) {
-        console.log(data);
+          $ajax.hide();
+          $('#loginform').show();
+          console.log(data);
 
         $('.errors').empty("");
 
@@ -84,6 +95,8 @@ $(document).ready(function () {
       .fail(function (x, status, msg) {
         console.log(msg);
       })
+
+
 
   });
 

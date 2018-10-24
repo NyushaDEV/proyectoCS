@@ -1,8 +1,10 @@
 <?php
 
 
-class VuelosController {
+class VuelosController
+{
     private $db;
+
     public function __construct()
     {
         global $db;
@@ -10,29 +12,28 @@ class VuelosController {
 
     }
 
-    public function mostrarVuelos() {
+    public function mostrarVuelos()
+    {
 
         global $db, $core;
+        $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
+            array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
+        // select idruta
+        $idruta = $db->q('SELECT id FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id))[0]->id;
 
+        if (isset($_POST['buscar_fecha'])) {
+            $fecha = str_replace('/', '-', $_POST['fecha']);
+        } else {
+            $fechasalida = $_SESSION['vuelo']['fechasalida'];
+            $fecha_explode = explode('/', $fechasalida);
+            $fecha = $fecha_explode[1] . '-' . $fecha_explode[0] . '-' . $fecha_explode[2];
+        }
 
-            $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
-                array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
-            // select idruta
-            $idruta = $db->q('SELECT id FROM rutas WHERE cod_aerop_origen=:codigo', array('codigo' => $id))[0]->id;
+        $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen', array(
+            'origen' => $idruta
+        ));
 
-            if(isset($_POST['buscar_fecha'])) {
-                $fecha = str_replace('/', '-', $_POST['fecha']);
-            } else {
-                $fechasalida = $_SESSION['vuelo']['fechasalida'];
-                $fecha_explode = explode('/', $fechasalida);
-                $fecha = $fecha_explode[1] . '-' . $fecha_explode[0] . '-' . $fecha_explode[2];
-            }
-
-            $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen', array(
-                'origen' => $idruta
-            ));
-
-            $output = '<table class="table text-center">
+        $output = '<table class="table text-center">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">Hora de salida</th>
@@ -41,28 +42,26 @@ class VuelosController {
                   <th scope="col">Reservar</th>
                 </tr>
               </thead><tbody>';
-            foreach ($vuelos as $vuelo) {
+        foreach ($vuelos as $vuelo) {
 
-                if( $core->formatDate($vuelo->fecha_salida, 'd-m-Y') == $fecha && $core->formatDate($vuelo->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
+            if ($core->formatDate($vuelo->fecha_salida, 'd-m-Y') == $fecha && $core->formatDate($vuelo->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
 
-                    $fecha_dia = date('d', $vuelo->fecha_salida);
-                    $fecha_mes = date('m', $vuelo->fecha_salida);
-                    $fecha_year = date('Y', $vuelo->fecha_salida);
+                $fecha_dia = date('d', $vuelo->fecha_salida);
+                $fecha_mes = date('m', $vuelo->fecha_salida);
+                $fecha_year = date('Y', $vuelo->fecha_salida);
 
-                    $reservar = $vuelo->asientos==0 ? '<a href="#" class="btn btn-secondary disabled">No hay plazas</a>': '<a href="'.WWW.'/reserva&do=reservar&vuelo='.$vuelo->idvuelo.'" class="btn btn-primary">Reservar</a>';
-                    $textoreserva = $vuelo->asientos < 20 ? '<div><mark class="small">Quedan menos de 20 asientos para este vuelo!</mark></div>' : '';
-                    $output .= '<tr>
+                $reservar = $vuelo->asientos == 0 ? '<button  class="btn btn-secondary disabled">No hay plazas</button>' : '<form action="' . WWW . '/reserva&do=reservar&vuelo=' . $vuelo->idvuelo . '" method="post"><button name="reservar_vuelo" class="btn btn-primary">Reservar</button></form>';
+                $textoreserva = $vuelo->asientos > 0 && $vuelo->asientos < 20 ? '<div><mark class="small">Quedan menos de 20 asientos para este vuelo!</mark></div>' : '';
+                $output .= '<tr>
                 <td>' . $core->formatDate($vuelo->fecha_salida, 'H:i') . '</td>
                 <td>' . $core->formatDate($vuelo->fecha_llegada, 'H:i') . '</td>
                       <td><span class="badge badge-success price">' . $vuelo->precio_inicial . ' €</span></td>
-                      <td>'.$reservar . $textoreserva .'</td>
+                      <td>' . $reservar . $textoreserva . '</td>
                     </tr>';
 
-                }
             }
-            echo $output;
-
-
+        }
+        echo $output;
     }
 
     public function buscar()
@@ -93,12 +92,12 @@ class VuelosController {
         }
     }
 
-    public function loadSavedResearch() {
+    public function loadSavedResearch()
+    {
         global $db, $core;
         $output = '';
 
         $this->mostrarVuelos();
-
 
         echo "<h1>Reservar vuelo</h1>";
         if (isset($_SESSION['vuelo'])) {
@@ -122,12 +121,12 @@ class VuelosController {
             $repeats_date = null;
             foreach ($vuelos as $result) {
 
-                if ($repeats_date !== $core->formatDate($result->fecha_salida, 'd-m-Y') &&  $core->formatDate($result->fecha_salida, 'd-m-Y') >  $core->formatDate(time(), 'd-m-Y')) {
+                if ($repeats_date !== $core->formatDate($result->fecha_salida, 'd-m-Y') && $core->formatDate($result->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
                     echo '<div class="col-md-3">
                         <form method="post" action="">
-                        <input type="hidden" name="id_ruta" value="'.$idruta.'"/>
-                        <input type="hidden" name="codigo_aeropuerto" value="'.$id.'"/>
-                        <input type="hidden" name="fecha" value="'.$core->formatDate($result->fecha_salida, 'd-m-Y').'"/>
+                        <input type="hidden" name="id_ruta" value="' . $idruta . '"/>
+                        <input type="hidden" name="codigo_aeropuerto" value="' . $id . '"/>
+                        <input type="hidden" name="fecha" value="' . $core->formatDate($result->fecha_salida, 'd-m-Y') . '"/>
                         <button name="buscar_fecha" class="btn btn-secondary">' . $core->formatDate($result->fecha_salida, 'l d F') . '</button>
                         </form>
                         </div>';
@@ -136,12 +135,7 @@ class VuelosController {
             }//end foreach */
             echo '</div>'; // end .row
 
-        }
-
-
-
-
-        else {
+        } else {
             $output .= '<p>No tienes ninguna reserva hecha. </p> <a class="btn btn-primary" href="' . WWW . '">Buscar vuelos</a>';
         }
 
@@ -152,10 +146,13 @@ class VuelosController {
     }
 
 
-    public function reservar() {
-        if(isset($_GET['do'])) {
+    public function reservar()
+    {
+        if (isset($_POST['reservar_vuelo']) && isset($_GET['do'])) {
             $do = $_GET['do'];
-            echo $do;
+            if($do == 'rservar') {
+                var_dump($_POST);
+            }
         }
     }
 

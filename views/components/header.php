@@ -11,6 +11,10 @@
     <title><?= SITENAME; ?></title>
 </head>
 <body>
+<script>
+    var site_url = '<?= WWW; ?>';
+</script>
+
 <?php  $this->load('components/navbar'); ?>
 
 <!-- Container -->
