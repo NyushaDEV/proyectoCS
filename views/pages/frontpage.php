@@ -1,44 +1,8 @@
 <?php
 $vuelos->buscar();
 $airports = $this->db->q('SELECT * FROM aeropuertos');
-var_dump($_SESSION);
+//var_dump($_SESSION);
 ?>
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Iniciar sesión</h5> <button type="submit" class="close"
-                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-            </div>
-
-            <div class="modal-body">
-
-                <div id="ajax"></div>
-                <form method="post" id="loginform" action="ajax/login.php">
-                    <div class="form-group"> <label for="loginEmail">E-mail</label>
-                        <input name="email" type="email" class="form-control " id="loginEmail" aria-describedby="emailHelp"
-                            placeholder="Enter email">
-                        <div class="errors">
-
-                        </div>
-                        </div>
-                    <div class="form-group"> <label for="exampleInputPassword1">Contraseña</label>
-                        <input name="password" type="password" class="form-control" id="loginPassword"
-                            placeholder="Password">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Registrarse</button>
-                <button id="login" type="submit" class="btn btn-primary">Entrar</button> </div>
-        </div>
-    </div>
-</div>
-
-
-
-
 
 <div id="search">
     <style>
@@ -68,13 +32,13 @@ var_dump($_SESSION);
         <div class="col"></div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-6 col-md-6">
+    <div class="columns">
+        <div class="column">
             <form method="post" id="aeropuertos" action="">
                 <h4>Origen</h4>
 
 
-                <div class="form-group">
+                <div class="control">
                     <div class="ui-widget">
                         <select name="aeropuerto_origen" id="combobox_origen">
                             <option value="">Select one...</option>
@@ -86,15 +50,15 @@ var_dump($_SESSION);
                         </select>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <a id="showFlightDate" class="btn btn-secondary" href="">Continuar</a>
+<br>
+                <div class="control">
+                    <a id="showFlightDate" class="button is-large is-warning" href="">Continuar</a>
                 </div>
         </div>
 
-        <div class="col-xs-6 col-md-6">
+        <div class="column">
             <h4>Destino</h4>
-            <div class="form-group">
+            <div class="control">
                 <select name="aeropuerto_destino" id="combobox_destino">
                     <option value="">Select one...</option>
                     <?php foreach ($airports as $airport) {?>
@@ -103,60 +67,65 @@ var_dump($_SESSION);
                 </select>
             </div>
 
-
-
         </div>
+    </div>
 
-        <div class="col-xs-6 col-md-6">
-            <div class="hidden-flight-wrapper d-none">
-                <div class="form-check form-check-inline">
+    <div class="columns">
+
+        <div class="column">
+            <div class="hidden-flight-wrapper is-invisible">
+                <div class="control">
                     <input class="form-check-input" checked type="radio" name="tipo" id="radioIda" value="ida">
                     <label class="form-check-label" for="radioIda">Solo ida</label>
-                </div>
-                <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="tipo" id="idayVuelta" value="idavuelta">
                     <label class="form-check-label" for="idayVuelta">Ida y vuelta</label>
                 </div>
 
-                <div class="form-group">
+                <div class="control">
                     <label for="fechasalida">Fecha de Salida</label>
-                    <input  name="fechasalida" class="form-control" type="text" placehoder="Fecha de salida" id="fechasalida">
+                    <input  name="fechasalida" class="input" type="text" placehoder="Fecha de salida" id="fechasalida">
 
                 </div>
+
+
 
             </div>
         </div>
 
-        <div class="col-xs-6 col-md-6">
-            <div class="hidden-flight-wrapper d-none">
-                <div class="form-group">
-                    <div id="fechaderegreso" class="d-none"><br>
-                        <label for="fecharegreso">Fecha de regreso</label>
-                        <input name="fecharegreso" class="form-control" type="text" placehoder="Fecha de regreso" id="fecharegreso">
-                    </div>
+        <div class="column">
+            <div class="control hidden-flight-wrapper">
+                <div id="fechaderegreso" class="is-invisible"><br>
+                    <label for="fecharegreso">Fecha de regreso</label>
+                    <input name="fecharegreso" class="input" type="text" placehoder="Fecha de regreso" id="fecharegreso">
                 </div>
             </div>
         </div>
+    </div><!--/.columns-->
 
-        <div class="col-xs-6 col-md-2 hidden-flight-wrapper d-none">
-            <div class="form-group">
+    <div class="columns">
+
+        <div class="column hidden-flight-wrapper is-invisible">
+            <div class="control">
                 <label for="Adultos">Adultos</label>
-                <input type="number" name="adultos" class="form-control" value="1"  min="0" max="10">
+                <input type="number" name="adultos" class="input" value="1"  min="0" max="10">
             </div>
         </div>
 
-        <div class="col col-xs-12 col-md-12">
-            <div class="hidden-flight-wrapper d-none">
 
-                <div class="form-group">
-                    <button name="buscarvuelos" id="buscarVuelo" class="btn btn-secondary">
+    </div><!-- /.columns -->
+
+    <div class="columns">
+        <div class="column">
+            <div class="hidden-flight-wrapper is-invisible">
+                <div class="control">
+                    <button name="buscarvuelos" id="buscarVuelo" class="button is-large is-danger is-fullwidth">
                         Buscar vuelo
                     </button>
                 </div>
                 </form>
             </div>
         </div>
+    </div>
 
-    </div><!--/.row-->
 
 </div>

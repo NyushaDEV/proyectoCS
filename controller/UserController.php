@@ -34,7 +34,7 @@ class UserController {
             }
 
          else if($login_user_data) {
-                // login correct
+                // modal correct
                 $ajax['status'] = 'success';
                 $_SESSION['email']  = $email;
                 $_SESSION['password']  = $password;

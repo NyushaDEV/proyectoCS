@@ -15,9 +15,7 @@ class VuelosController
 
     }
 
-    public function displayFlights()
-    {
-
+    public function displayFlights() {
         global $db, $core;
         $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
             array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
@@ -39,8 +37,8 @@ class VuelosController
             'origen' => $idruta
         ));
 
-        $output = '<table class="table text-center">
-              <thead class="thead-dark">
+        $output = '<table class="table is-striped">
+              <thead>
                 <tr>
                   <th scope="col">Hora de salida</th>
                   <th scope="col">Hora de llegada</th>
@@ -56,7 +54,7 @@ class VuelosController
                 $fecha_mes = date('m', $vuelo->fecha_salida);
                 $fecha_year = date('Y', $vuelo->fecha_salida);
 
-                $reservar = $vuelo->asientos == 0 ? '<button  class="btn btn-secondary disabled">No hay plazas</button>' : '<form action="' . WWW . '/booking&flight=' . $vuelo->idvuelo . '&from='.$from.'&to='.$to.'" method="post"><input type="hidden" name="id_vuelo" value="'.$vuelo->idvuelo.'"><button name="reservar_vuelo" class="btn btn-primary">Reservar</button></form>';
+                $reservar = $vuelo->asientos == 0 ? '<button  class="button is-disabled">No hay plazas</button>' : '<form action="' . WWW . '/booking&flight=' . $vuelo->idvuelo . '&from='.$from.'&to='.$to.'" method="post"><input type="hidden" name="id_vuelo" value="'.$vuelo->idvuelo.'"><button name="reservar_vuelo" class="button is-primary">Reservar</button></form>';
                 $textoreserva = $vuelo->asientos > 0 && $vuelo->asientos < 20 ? '<div><mark class="small">Quedan menos de 20 asientos para este vuelo!</mark></div>' : '';
                 $output .= '<tr>
                 <td>' . $core->formatDate($vuelo->fecha_salida, 'H:i') . '</td>
@@ -121,23 +119,28 @@ class VuelosController
             $vuelos = $db->q('SELECT * FROM vuelos WHERE idruta=:origen', array(
                 'origen' => $idruta
             ));
-            echo '<div class="row">';
+            echo '<div class="columns"><div class="column">';
             $repeats_date = null;
             foreach ($vuelos as $result) {
 
+                echo '<div class="tabs is-centered is-boxed is-medium"><ul>';
                 if ($repeats_date !== $core->formatDate($result->fecha_salida, 'd-m-Y') && $core->formatDate($result->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
-                    echo '<div class="col-md-3">
+                    echo '
                         <form method="post" action="">
                         <input type="hidden" name="id_ruta" value="' . $idruta . '"/>
                         <input type="hidden" name="codigo_aeropuerto" value="' . $id . '"/>
                         <input type="hidden" name="fecha" value="' . $core->formatDate($result->fecha_salida, 'd-m-Y') . '"/>
-                        <button name="buscar_fecha" class="btn btn-secondary">' . $core->formatDate($result->fecha_salida, 'l d F') . '</button>
+                        <li class="is-active">
+                        <a href="">
+                        <span class="icon is-small"><i class="fas fa-calendar-alt " aria-hidden="true"></i></span>
+                        <span>' . $core->formatDate($result->fecha_salida, 'l d F') . '</span></a>
+                        </li>
                         </form>
-                        </div>';
+                        ';
                 }
                 $repeats_date = $core->formatDate($result->fecha_salida, 'd-m-Y');
             }//end foreach */
-            echo '</div>'; // end .row
+            echo '</ul></div></div></div>'; // end .row
 
         } else {
             $output .= '<p>No tienes ninguna reserva hecha. </p> <a class="btn btn-primary" href="' . WWW . '">Buscar vuelos</a>';
@@ -147,6 +150,9 @@ class VuelosController
     }
 
 
+    /**
+     * Muestra el formulario para hacer la reserva
+     */
     public function booking() {
         if (isset($_POST['reservar_vuelo']) && isset($_GET['flight']) || isset($_GET['flight'])) {
             $flight_id = $_GET['flight'];
@@ -160,52 +166,58 @@ class VuelosController
         }
     }
 
+    /**
+     * Crea uno o varios formularios  dependiendo de $people
+     * @param int $people
+     * @param $from
+     * @param $to
+     */
     public function createFlightForm($people=1, $from, $to) {
         $output = '<h1>'.$this->flightmodel->get_airport_names($from, $to).'</h1>';
         $output .= '<form id="flight_booking_form" action="" method="post">';
         for ($i=1; $i <= $people; $i++) {
-            $output .= '<div class="form-group">';
+            $output .= '<div class="field">';
             $output .= '<h2>Información personal del pasajero ('.$i.')</h2>';
             $output .= '<label for="Passanger_name_'.$i.'">Nombre</label>';
-            $output .= '<input id="Passanger_name_'.$i.'" class="form-control" name="passanger_name_'.$i.'">';
+            $output .= '<input id="Passanger_name_'.$i.'" class="input" name="passanger_name_'.$i.'">';
             $output .= '</div>';
-            $output .= '<div class="form-group">';
+            $output .= '<div class="field">';
             $output .= '<label for="passanger_lastname_'.$i.'">Apellido(s)</label>';
-            $output .= '<input id="passanger_lastname_'.$i.'" class="form-control" name="passanger_lastname_'.$i.'">';
+            $output .= '<input id="passanger_lastname_'.$i.'" class="input" name="passanger_lastname_'.$i.'">';
             $output .= '</div>';
 
-            $output .= '<div class="form-group">';
+            $output .= '<div class="field">';
             $output .= '<label for="passanger_birthday_'.$i.'">Fecha de nacimiento</label>';
-            $output .= '<input id="passanger_birthday_'.$i.'" class="form-control" name="passanger_birthday_'.$i.'">';
+            $output .= '<input id="passanger_birthday_'.$i.'" class="input" name="passanger_birthday_'.$i.'">';
             $output .= '</div>';
 
             if($i==1) {
-                $output .= '<div class="form-group">';
+                $output .= '<div class="field">';
                 $output .= '<label for="passanger_lastname_'.$i.'">Número de teléfono</label>';
-                $output .= '<input id="passanger_phone_number" class="form-control" name="passanger_phonenumber">';
+                $output .= '<input id="passanger_phone_number" class="input" name="passanger_phonenumber">';
                 $output .= '</div>';
             }
 
-            $output .= '<div class="form-group">';
+            $output .= '<div class="field">';
             $output .= '<label for="passanger_address_'.$i.'">Dirección</label>';
-            $output .= '<input id="passanger_address_'.$i.'" class="form-control" name="passanger_address_'.$i.'">';
+            $output .= '<input id="passanger_address_'.$i.'" class="input" name="passanger_address_'.$i.'">';
             $output .= '</div>';
 
-            $output .= '<div class="form-group">';
+            $output .= '<div class="field">';
             $output .= '<label for="passanger_postalcode_'.$i.'">Código postal</label>';
-            $output .= '<input id="passanger_postalcode_'.$i.'" class="form-control" name="passanger_postalcode_'.$i.'">';
+            $output .= '<input id="passanger_postalcode_'.$i.'" class="input" name="passanger_postalcode_'.$i.'">';
             $output .= '</div>';
 
 
-            $output .= '<div class="form-group">';
-            $output .= '<button class="btn btn-primary">Continuar</button>';
+            $output .= '<div class="field">';
+            $output .= '<button class="button is-large is-info">Continuar</button>';
             $output .= '</div>';
         }
         $output .= '</form>';
         echo $output;
     }
 
-    public function _load_flights_helper()
+    public function _load_flights_helper($array)
     {
         $html = '<table class="table">
           <thead class="thead-dark">

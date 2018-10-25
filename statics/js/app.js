@@ -11,7 +11,7 @@ $(document).ready(function () {
       console.log($('#inpt_combobox_origen').val());
       event.preventDefault();
       if($('#inpt_combobox_origen').val() !=='' && $($('#inpt_combobox_destino')).val() !=='') {
-        $('.hidden-flight-wrapper').removeClass('d-none');
+        $('.hidden-flight-wrapper').removeClass('is-invisible');
       } else {
         console.log('Empty!');
       }
@@ -27,15 +27,15 @@ $(document).ready(function () {
 
   function idayVuelta() {
     if (this.checked && this.value == 'idavuelta') {
-      $('#fechaderegreso').removeClass('d-none');
+      $('#fechaderegreso').removeClass('is-invisible');
       $("#fecharegreso").datepicker({ minDate: 0, maxDate: "+12M +10D" });
     } else if (this.value == 'ida') {
-      $('#fechaderegreso').addClass('d-none');
+      $('#fechaderegreso').addClass('is-invisible');
     }
   }
 
 
-  $('#login').on('click', function (e) {
+  $('#modal').on('click', function (e) {
 
     let errorEmail = false;
     let errorPassword = false;
@@ -49,7 +49,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-      url: 'ajax/login.php',
+      url: 'ajax/modal.php',
       type: 'post',
       dataType: 'json',
       data: $('#loginform').serialize()
@@ -109,7 +109,7 @@ $(document).ready(function () {
           '                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>\n' +
           '            </div>\n' +
           '            <div class="modal-body">\n' +
-          '                <form method="post" id="loginform" action="ajax/login.php">\n' +
+          '                <form method="post" id="loginform" action="ajax/modal.php">\n' +
           '                    <div class="form-group"> <label for="loginEmail">E-mail</label>\n' +
           '                        <input name="email" type="email" class="form-control " id="loginEmail" aria-describedby="emailHelp"\n' +
           '                            placeholder="Enter email">\n' +
@@ -125,7 +125,7 @@ $(document).ready(function () {
           '            </div>\n' +
           '            <div class="modal-footer">\n' +
           '                <button type="button" class="btn btn-secondary" data-dismiss="modal">Registrarse</button>\n' +
-          '                <button id="login" type="submit" class="btn btn-primary">Entrar</button> </div>\n' +
+          '                <button id="modal" type="submit" class="btn btn-primary">Entrar</button> </div>\n' +
           '        </div>\n' +
           '    </div>\n' +
           '</div>';
