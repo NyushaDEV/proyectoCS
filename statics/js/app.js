@@ -35,7 +35,7 @@ $(document).ready(function () {
   }
 
 
-  $('#modal').on('click', function (e) {
+  $('#login').on('click', function (e) {
 
     let errorEmail = false;
     let errorPassword = false;
@@ -44,8 +44,8 @@ $(document).ready(function () {
 
     $ajax.show();
 
-    $ajax.html('<img src="'+site_url+'/statics/images/loading.svg">Iniciando sesión...');
-    $('#loginform').hide();
+    // $ajax.html('<img src="'+site_url+'/statics/images/loading.svg">Iniciando sesión...');
+    // $('#loginform').hide();
 
 
     $.ajax({
@@ -57,8 +57,8 @@ $(document).ready(function () {
 
 
       .done(function (data) {
-          $ajax.hide();
-          $('#loginform').show();
+          // $ajax.hide();
+          // $('#loginform').show();
           console.log(data);
 
         $('.errors').empty("");

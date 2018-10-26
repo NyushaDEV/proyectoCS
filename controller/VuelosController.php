@@ -55,12 +55,12 @@ class VuelosController
                 $fecha_year = date('Y', $vuelo->fecha_salida);
 
                 $reservar = $vuelo->asientos == 0 ? '<button  class="button is-disabled">No hay plazas</button>' : '<form action="' . WWW . '/booking&flight=' . $vuelo->idvuelo . '&from='.$from.'&to='.$to.'" method="post"><input type="hidden" name="id_vuelo" value="'.$vuelo->idvuelo.'"><button name="reservar_vuelo" class="button is-primary">Reservar</button></form>';
-                $textoreserva = $vuelo->asientos > 0 && $vuelo->asientos < 20 ? '<div><mark class="small">Quedan menos de 20 asientos para este vuelo!</mark></div>' : '';
+                $textoreserva = $vuelo->asientos > 0 && $vuelo->asientos < 20 ? '<span class="tag is-warning">Quedan menos de 20 asientos para este vuelo!</span>' : '';
                 $output .= '<tr>
                 <td>' . $core->formatDate($vuelo->fecha_salida, 'H:i') . '</td>
-                <td>' . $core->formatDate($vuelo->fecha_llegada, 'H:i') . '</td>
+                <td class="center">' . $core->formatDate($vuelo->fecha_llegada, 'H:i') . '</td>
                       <td><span class="badge badge-success price">' . $vuelo->precio_inicial . ' €</span></td>
-                      <td>' . $reservar . $textoreserva . '</td>
+                      <td>' . $textoreserva  . $reservar .'</td>
                     </tr>';
 
             }

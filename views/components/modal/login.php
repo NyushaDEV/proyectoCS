@@ -15,7 +15,7 @@
         <h1 class="title">Iniciar sesión</h1>
 
         <p>Iniciar sesión ahora para gestionar tus vuelos</p>
-        <form method="post" id="loginform" action="ajax/login.php">
+        <form method="post" id="loginform" action="<?= WWW; ?>/ajax/login.php">
 
             <div class="field">
 
@@ -39,7 +39,6 @@
                 </p>
             </div>
 
-        </form>
 
 <br>
             <div class="columns">
@@ -54,6 +53,7 @@
                 </div>
             </div>
 
+        </form>
 
     </div>
         </div>

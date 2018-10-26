@@ -8,7 +8,10 @@
     <?= $this->addRessource('styles', 'css'); ?>
     <?= $this->addRessource('jquery-ui.min', 'css'); ?>
     <?= $this->addRessource('animate.min', 'css'); ?>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <?= $this->addRessource('https://use.fontawesome.com/releases/v5.4.1/css/all.css', 'css', true); ?>
+
+
+
     <title><?= SITENAME; ?></title>
 </head>
 <body>
