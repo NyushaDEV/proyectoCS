@@ -49,7 +49,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-      url: 'ajax/modal.php',
+      url: 'ajax/login.php',
       type: 'post',
       dataType: 'json',
       data: $('#loginform').serialize()
@@ -61,30 +61,30 @@ $(document).ready(function () {
           // $('#loginform').show();
           console.log(data);
 
-        $('.errors').empty("");
-
         if(!errorEmail) {
-          $('#loginEmail').removeClass('is-invalid');
+          $('#loginEmail').removeClass('is-danger');
+            $('#error-email').remove();
         }
         if(!errorPassword) {
-          $('#loginPassword').removeClass('is-invalid');
+          $('#loginPassword').removeClass('is-danger');
+            $('#error-password').remove();
         }
 
         if ($('#loginEmail').val() == '') {
           errorEmail = true;
           console.log(data.message['email']);
-          $('#loginEmail').addClass('is-invalid');
-          $('#loginEmail').after('<div class="errors"><span class="error">'+data.message['email']+'</span></div>');
+          $('#loginEmail').addClass('is-danger');
+          $('#loginEmail').after('<div id="error-email" class="tag is-danger">'+data.message['email']+'</div>');
         }
         if($('#loginPassword').val() == '') {
           errorPassword = true;
-          $('#loginPassword').addClass('is-invalid');
-          $('#loginPassword').after('<div class="errors"><span class="error">'+data.message['pass']+'</span></div>');
+            $('#loginPassword').addClass('is-danger');
+          $('#loginPassword').after('<div id="error-password" class="tag is-danger">'+data.message['pass']+'</div>');
         }
         if(data.status=='no_account') {
           console.log(data.message['no_account']);
           $('#error-no-account').remove();
-          $('.modal-body').append('<div id="error-no-account" class="alert alert-warning">'+data.message['no_account']+'');
+          $('#loginPassword').after('<div id="error-no-account" class="tag is-warning">'+data.message['no_account']+'</div>');
         }
         if(data.status == 'success') {
           $('#loginModal').slideUp();

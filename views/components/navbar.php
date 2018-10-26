@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div id="navMenuColordark-example" class="navbar-menu">
+    <div class="navbar-menu">
         <div class="navbar-start">
             <a class="navbar-item" href="">
                 Inicio
@@ -21,7 +21,12 @@
                 Reserva
             </a>
 
+            <?php if(!$usermodel->isLogged()) { ?>
             <a id="demo01" class="navbar-item" href="#animatedModal">Iniciar sesión</a>
+            <?php } else { ?>
+                <a class="navbar-item" href="#animatedModal">Mi cuenta</a>
+                <a class="navbar-item" href="<?= WWW; ?>/ajax/logout.php">Desconectar</a>
+            <?php } ?>
         </div>
             </div>
         </div>

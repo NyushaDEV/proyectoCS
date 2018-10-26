@@ -22,7 +22,7 @@
 <script>
 
     $("#demo01").animatedModal({
-        color: '#00d1b2',
+        color: '#484848',
         animatedIn: 'zoomIn',
         animatedOut: 'bounceOut',
         animationDuration: '.4s'

@@ -28,10 +28,12 @@ h4 {
 }
 .content {
   margin-top: 40px;
-  padding: 5px;
   box-sizing: border-box;
   background-color: #fff;
   min-height: 400px;
+}
+.padding-25 {
+  padding: 25px;
 }
 .modal-content,
 .container {

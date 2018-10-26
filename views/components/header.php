@@ -8,10 +8,7 @@
     <?= $this->addRessource('styles', 'css'); ?>
     <?= $this->addRessource('jquery-ui.min', 'css'); ?>
     <?= $this->addRessource('animate.min', 'css'); ?>
-    <?= $this->addRessource('https://use.fontawesome.com/releases/v5.4.1/css/all.css', 'css', true); ?>
-
-
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     <title><?= SITENAME; ?></title>
 </head>
 <body>

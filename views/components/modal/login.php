@@ -2,8 +2,7 @@
 <div class="close-animatedModal">
         <img width="50" align="right" src="statics/images/close_icon.svg" alt="">
     </div>
-<div class="hero is-primary">
-
+<div class="hero is-transparent  has-text-white">
 
     <div class="hero-body">
         <div class="container">
@@ -12,7 +11,7 @@
     <div class="modal-content">
 
         <div id="ajax"></div>
-        <h1 class="title">Iniciar sesión</h1>
+        <h1 class="title  has-text-white">Iniciar sesión</h1>
 
         <p>Iniciar sesión ahora para gestionar tus vuelos</p>
         <form method="post" id="loginform" action="<?= WWW; ?>/ajax/login.php">

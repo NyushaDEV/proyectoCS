@@ -103,10 +103,17 @@ class VuelosController
 
         $this->displayFlights();
 
-        echo "<h1>Reservar vuelo</h1>";
+
+
+
+        echo '<section class="hero is-warning hero-body">
+<div class="container padding-25">
+
+      <h1 class="title">Reservar vuelo</h1>';
         if (isset($_SESSION['vuelo'])) {
             echo '<h2>' . $_SESSION['vuelo']['aeropuerto_origen'] . ' - ' . $_SESSION['vuelo']['aeropuerto_destino'] . '</h2>';
 
+            echo '<div><a href="<?= WWW; ?>" class="button is-large is-dark ">Buscar de nuevo</a></div>';
             $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
                 array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
             // select idruta
@@ -140,7 +147,7 @@ class VuelosController
                 }
                 $repeats_date = $core->formatDate($result->fecha_salida, 'd-m-Y');
             }//end foreach */
-            echo '</ul></div></div></div>'; // end .row
+            echo '</ul></div></div></div></div></section>'; // end .row
 
         } else {
             $output .= '<p>No tienes ninguna reserva hecha. </p> <a class="btn btn-primary" href="' . WWW . '">Buscar vuelos</a>';
