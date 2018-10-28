@@ -37,7 +37,7 @@ class VuelosController
             'origen' => $idruta
         ));
 
-        $output = '<table class="table is-striped">
+        $output = '<table class="table is-striped is-fullwidth ">
               <thead>
                 <tr>
                   <th scope="col">Hora de salida</th>
@@ -47,8 +47,8 @@ class VuelosController
                 </tr>
               </thead><tbody>';
         foreach ($vuelos as $vuelo) {
-
-            if ($core->formatDate($vuelo->fecha_salida, 'd-m-Y') == $fecha && $core->formatDate($vuelo->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
+//$core->formatDate($vuelo->fecha_salida, 'd-m-Y') == $fecha &&
+            if ( $core->formatDate($vuelo->fecha_salida, 'd-m-Y') > $core->formatDate(time(), 'd-m-Y')) {
 
                 $fecha_dia = date('d', $vuelo->fecha_salida);
                 $fecha_mes = date('m', $vuelo->fecha_salida);
@@ -113,7 +113,7 @@ class VuelosController
         if (isset($_SESSION['vuelo'])) {
             echo '<h2>' . $_SESSION['vuelo']['aeropuerto_origen'] . ' - ' . $_SESSION['vuelo']['aeropuerto_destino'] . '</h2>';
 
-            echo '<div><a href="<?= WWW; ?>" class="button is-large is-dark ">Buscar de nuevo</a></div>';
+            echo '<div><a href="'.WWW.'" class="button is-large is-dark is-pulled-right">Buscar de nuevo</a></div>';
             $id = $db->q('SELECT codigo FROM aeropuertos WHERE nombre=:nombre LIMIT 1',
                 array('nombre' => $_SESSION['vuelo']['aeropuerto_destino']))[0]->codigo;
             // select idruta
@@ -180,64 +180,101 @@ class VuelosController
      * @param $to
      */
     public function createFlightForm($people=1, $from, $to) {
-        $output = '<h1>'.$this->flightmodel->get_airport_names($from, $to).'</h1>';
-        $output .= '<form id="flight_booking_form" action="" method="post">';
-        for ($i=1; $i <= $people; $i++) {
-            $output .= '<div class="field">';
-            $output .= '<h2>Información personal del pasajero ('.$i.')</h2>';
-            $output .= '<label for="Passanger_name_'.$i.'">Nombre</label>';
-            $output .= '<input id="Passanger_name_'.$i.'" class="input" name="passanger_name_'.$i.'">';
+        $output = '<div class="columns"><div class="column is-8"><h1>'.$this->getCurrentDistination().'</h1>';
+        $output .= '<div id="ajax-response"></div>';
+        $output .= '<form id="flight_booking_form" action="'.WWW.'/ajax/savepassanger.php" method="post">';
+        $output .= '<div class="field">';
+            $output .= '<h2>Información personal del pasajero </h2>';
+            $output .= '<label for="passanger_name">Nombre</label>';
+            $output .= '<input id="passanger_name" class="input" name="passanger_name">';
             $output .= '</div>';
             $output .= '<div class="field">';
-            $output .= '<label for="passanger_lastname_'.$i.'">Apellido(s)</label>';
-            $output .= '<input id="passanger_lastname_'.$i.'" class="input" name="passanger_lastname_'.$i.'">';
-            $output .= '</div>';
-
-            $output .= '<div class="field">';
-            $output .= '<label for="passanger_birthday_'.$i.'">Fecha de nacimiento</label>';
-            $output .= '<input id="passanger_birthday_'.$i.'" class="input" name="passanger_birthday_'.$i.'">';
-            $output .= '</div>';
-
-            if($i==1) {
-                $output .= '<div class="field">';
-                $output .= '<label for="passanger_lastname_'.$i.'">Número de teléfono</label>';
-                $output .= '<input id="passanger_phone_number" class="input" name="passanger_phonenumber">';
-                $output .= '</div>';
-            }
-
-            $output .= '<div class="field">';
-            $output .= '<label for="passanger_address_'.$i.'">Dirección</label>';
-            $output .= '<input id="passanger_address_'.$i.'" class="input" name="passanger_address_'.$i.'">';
+            $output .= '<label for="passanger_lastname">Apellido(s)</label>';
+            $output .= '<input id="passanger_lastname" class="input" name="passanger_lastname">';
             $output .= '</div>';
 
             $output .= '<div class="field">';
-            $output .= '<label for="passanger_postalcode_'.$i.'">Código postal</label>';
-            $output .= '<input id="passanger_postalcode_'.$i.'" class="input" name="passanger_postalcode_'.$i.'">';
+            $output .= '<label for="passanger_birthday">Fecha de nacimiento</label>';
+            $output .= '<input id="passanger_birthday" class="input" name="passanger_birthday">';
             $output .= '</div>';
-
 
             $output .= '<div class="field">';
-            $output .= '<button class="button is-large is-info">Continuar</button>';
+            $output .= '<label for="passanger_lastname">Número de teléfono</label>';
+            $output .= '<input id="passanger_phone_number" class="input" name="passanger_phonenumber">';
             $output .= '</div>';
-        }
-        $output .= '</form>';
+
+            $output .= '<div class="field">';
+            $output .= '<label for="passanger_city">Ciudad</label>';
+            $output .= '<input id="passanger_city" class="input" name="passanger_city">';
+            $output .= '</div>';
+
+            $output .= '<div class="field">';
+            $output .= '<label for="passanger_address">Dirección</label>';
+            $output .= '<input id="passanger_address" class="input" name="passanger_address">';
+            $output .= '</div>';
+
+            $output .= '<div class="field">';
+            $output .= '<label for="passanger_postcode">Código postal</label>';
+            $output .= '<input id="passanger_postcode" class="input" name="passanger_postcode">';
+            $output .= '</div>';
+
+            $output .= '<div class="field"><label for="passanger_lugage">Equipaje</label></div> <div class="select">';
+            $output .= '';
+            $output .= '<select name="passanger_lugage">
+                        <option>Sólo equipaje de mano</option>
+                        <option>1 Maleta (20€)</option>
+                        <option>2 Maletas (38€)</option>
+                        </select>';
+            $output .= '</div>';
+
+        $output .= '<div class="field"><button id="add-passanger" class="button is-danger is-pulled-right">Añadir otro pasajero</button></div>';
+
+        $output .= '</div>';
+            $output .= $this->get_flight_summary();
+            $output .= '</form></div>';
         echo $output;
     }
 
-    public function _load_flights_helper($array)
-    {
-        $html = '<table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Hora de salida</th>
-              <th scope="col">Hora de llegada</th>
-              <th scope="col">Reservar</th>
-            </tr>
-          </thead>
-          <tbody>
-        
-          </tbody>
-        </table>';
-        return $html;
+    public function get_flight_summary() {
+        global $core;
+        $fid = isset($_GET['flight']) ? $_GET['flight'] : null;
+        $output = '<div class="column">';
+        $output .= '<h2>Mi vuelo</h2>';
+        $output .= '<p><strong>'.$this->getCurrentDistination().'</strong></p>';
+        $output .= $core->formatDate($this->flightmodel->get_flight_info($fid)->fecha_salida, 'l M. H:i');
+        $output .= '<div class="field"><button id="savePassanger" name="hacer_reserva" class="button is-large is-info">Continuar</button></div>';
+
+        $output .= '<div class="summary-price">'.$this->flightmodel->calculatePrice($fid).'</div>';
+        $output .= '</div>';
+        return $output;
+    }
+
+    public function getCurrentDistination() {
+        $from = $_GET['from'];
+        $to = $_GET['to'];
+        return $this->flightmodel->get_airport_names($from, $to);
+    }
+
+    public  function savePassanger() {
+        $error = false;
+        $ajax = array();
+        if(isset($_POST['passanger_name'])) {
+
+            $name = $_POST['passanger_name'];
+            $lastname = $_POST['passanger_lastname'];
+            $birthday = $_POST['passanger_birthday'];
+            $phonenumber = $_POST['passanger_phonenumber'];
+            $address = $_POST['passanger_address'];
+            $postcode= $_POST['passanger_postcode'];
+
+            /*if(empty($name) || empty($lastname) || empty($birthday) || empty($phonenumber) || empty($address) || empty($postcode)) {
+                $ajax['message'] = 'Por favor, rellena todos los campos.';
+                $ajax['status'] = 'empty';
+                $error=true;
+            }*/
+
+
+        }
+        echo json_encode($ajax, true);
     }
 }

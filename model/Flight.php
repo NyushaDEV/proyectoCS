@@ -28,6 +28,12 @@ class Flight {
         return $flight_seats ? $flight_seats[0]->asientos : 'not_found';
     }
 
+    public function get_flight_info($fid) {
+        global $db;
+        $flight = $db->q('SELECT * FROM vuelos WHERE idvuelo=:idvuelo', array('idvuelo' => $fid));
+        return $flight[0];
+    }
+
     public function get_airport_names($from, $to) {
         global $db;
         $depart = $db->q('SELECT codigo, nombre FROM aeropuertos WHERE codigo=:codigo', array(
@@ -41,5 +47,14 @@ class Flight {
         if($depart && $arrival) {
             return $depart[0]->nombre . ' - ' . $arrival[0]->nombre;
         }
+    }
+
+    public  function calculatePrice($fid) {
+        $price = $this->get_flight_info($fid)->precio_inicial;
+
+        // do some calculations then return price
+        // ..
+        return $price;
+
     }
 }

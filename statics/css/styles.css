@@ -26,7 +26,7 @@ h4 {
 .fp-search:focus {
   outline: none !important;
 }
-.content {
+.main-content {
   margin-top: 40px;
   box-sizing: border-box;
   background-color: #fff;

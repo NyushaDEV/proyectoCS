@@ -17,7 +17,8 @@
 <?= $this->addRessource('jquery-ui.min', 'js'); ?>
 <?= $this->addRessource('animatedModal.min', 'js'); ?>
 <?= $this->addRessource('autocomplete', 'js'); ?>
-<?= $this->addRessource('app', 'js'); ?>
+<?= $this->addRessource('api', 'js'); ?>
+<?= $this->addRessource('main', 'js'); ?>
 
 <script>
 

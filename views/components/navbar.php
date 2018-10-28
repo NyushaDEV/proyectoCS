@@ -1,6 +1,6 @@
 
 
-<nav class="navbar ">
+<nav class="navbar">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
             <?= SITENAME; ?>
@@ -20,16 +20,22 @@
             <a class="navbar-item" href="<?= WWW; ?>/reserva">
                 Reserva
             </a>
+        </div>
 
-            <?php if(!$usermodel->isLogged()) { ?>
-            <a id="demo01" class="navbar-item" href="#animatedModal">Iniciar sesión</a>
-            <?php } else { ?>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <?php if($usermodel->isLogged()) { ?>
                 <a class="navbar-item" href="#animatedModal">Mi cuenta</a>
                 <a class="navbar-item" href="<?= WWW; ?>/ajax/logout.php">Desconectar</a>
-            <?php } ?>
-        </div>
+                <?php } else { ?>
+                <div class="buttons">
+                    <a id="demo01" class="button is-light" href="#animatedModal">Iniciar sesión</a>
+                </div>
+                <?php } ?>
+
             </div>
         </div>
+    </div>
     </div>
 </nav>
 

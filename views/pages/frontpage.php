@@ -50,10 +50,7 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
                         </select>
                     </div>
                 </div>
-<br>
-                <div class="control">
-                    <a id="showFlightDate" class="button is-large is-warning" href="">Continuar</a>
-                </div>
+
         </div>
 
         <div class="column">
@@ -68,6 +65,18 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
             </div>
 
         </div>
+
+    </div>
+
+    <div class="columns">
+
+        <div class="column ">
+            <div class="control">
+                <a id="showFlightDate" class="button is-large is-warning is-full-mobile" href="">Continuar</a>
+                <div id="ajax-message"></div>
+            </div>
+        </div>
+
     </div>
 
     <div class="columns">
@@ -85,9 +94,8 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
                     <label for="fechasalida">Fecha de Salida</label>
                     <input  name="fechasalida" class="input" type="text" placehoder="Fecha de salida" id="fechasalida">
 
+                    <div id="ajax-message-fechasalida"></div>
                 </div>
-
-
 
             </div>
         </div>
@@ -110,8 +118,6 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
                 <input type="number" name="adultos" class="input" value="1"  min="0" max="10">
             </div>
         </div>
-
-
     </div><!-- /.columns -->
 
     <div class="columns">
@@ -126,6 +132,4 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
             </div>
         </div>
     </div>
-
-
 </div>

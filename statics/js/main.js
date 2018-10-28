@@ -3,9 +3,14 @@ $(document).ready(function () {
   var AirportsDepart = [], AirportsArrival = [];
 
   window.onload = function () {
-    openModal();
     $("#fechasalida").datepicker({ minDate: 0, maxDate: "+12M +10D" });
-    $('input[name="tipo"]').on('change', idayVuelta);
+
+    $('#savePassanger').on('click', savePassanger);
+
+    // Fecha nacimiento en la página de hacer reservas
+    $("#passanger_birthday").datepicker({ minDate: "-100Y" , maxDate: 0 });
+
+      $('input[name="tipo"]').on('change', idayVuelta);
 
     $('#showFlightDate').on('click', function(event) {
       console.log($('#inpt_combobox_origen').val());
@@ -13,17 +18,115 @@ $(document).ready(function () {
       if($('#inpt_combobox_origen').val() !=='' && $($('#inpt_combobox_destino')).val() !=='') {
         $('.hidden-flight-wrapper').removeClass('is-invisible');
       } else {
-        console.log('Empty!');
+          cordairways_api_show_error_message('#ajax-message', 'Debes elegir un lugar de origen y destino.');
       }
-    });
+
+        // if($('#fechasalida').val() ==''){
+        //     cordairways_api_show_error_message('#ajax-message-fechasalida', 'Debes elegir una fecha de salida.');
+        //     return false;
+        // }
+    })
 
     
   };
 
-  function openModal(modal) {
-    let html = '';
-    $('.container').append(html);
+  function savePassanger(e) {
+      e.preventDefault();
+      var form = $('form#flight_booking_form');
+
+      $('#error-message-api').hide();
+
+
+      let passanger_name = $('#passanger_name');
+      let passanger_lastname = $('#passanger_lastname');
+      let passanger_birthday = $('#passanger_birthday');
+      let passanger_phone = $('#passanger_phone_number');
+      let passanger_address = $('#passanger_address');
+      let passanger_city = $('#passanger_city');
+      let passanger_postcode = $('#passanger_postcode');
+
+      $.ajax({
+          url: form.attr('action'),
+          type: 'post',
+          dataType: 'json',
+          data: form.serialize(),
+          beforeSend: function(){
+              form.hide();
+              cordairways_api_create_loader('#ajax-response');
+              $('#loading').removeClass('is-hidden');
+          },
+          complete: function(){
+              form.show();
+              $('#loading').addClass('is-hidden');
+          }
+      })
+
+
+          .done(function(data) {
+
+              console.log(name);
+
+              if(passanger_name.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique el nombre del pasajero.', 'tag is-danger');
+                  passanger_name.addClass('is-danger');
+              } else {
+                  passanger_name.removeClass('is-danger');
+              }
+              if(passanger_lastname.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique los apellidos del pasajero.', 'tag is-danger');
+                  passanger_lastname.addClass('is-danger');
+              } else {
+                  passanger_lastname.removeClass('is-danger');
+
+              }
+              if(passanger_birthday.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la fecha de nacimiento.', 'tag is-danger');
+                  passanger_birthday.addClass('is-danger');
+              } else {
+                  passanger_birthday.removeClass('is-danger');
+
+              }
+
+              if(passanger_phone.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique un número de teléfono.', 'tag is-danger');
+                  passanger_phone.addClass('is-danger');
+              } else {
+                  passanger_phone.removeClass('is-danger');
+
+              }
+
+              if(passanger_city.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la ciudad', 'tag is-danger');
+                  passanger_city.addClass('is-danger');
+              } else {
+                  passanger_city.removeClass('is-danger');
+              }
+
+              if(passanger_address.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la dirección.', 'tag is-danger');
+                  passanger_address.addClass('is-danger');
+              } else {
+                  passanger_address.removeClass('is-danger');
+
+              }
+
+              if(passanger_postcode.val() == '') {
+                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique el código postal.', 'tag is-danger');
+                  passanger_postcode.addClass('is-danger');
+              } else {
+                  passanger_postcode.removeClass('is-danger');
+              }
+
+
+
+              console.log(data);
+
+          })
+          .fail(function (x, status, msg) {
+              console.log(msg);
+          })
   }
+
 
   function idayVuelta() {
     if (this.checked && this.value == 'idavuelta') {
@@ -47,15 +150,12 @@ $(document).ready(function () {
     // $ajax.html('<img src="'+site_url+'/statics/images/loading.svg">Iniciando sesión...');
     // $('#loginform').hide();
 
-
     $.ajax({
       url: 'ajax/login.php',
       type: 'post',
       dataType: 'json',
       data: $('#loginform').serialize()
     })
-
-
       .done(function (data) {
           // $ajax.hide();
           // $('#loginform').show();
