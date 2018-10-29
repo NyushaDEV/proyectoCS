@@ -50,6 +50,19 @@ footer {
   width: 100%;
   padding: 50px;
 }
+.summary-price {
+  padding: 5px;
+  background: #e6e6e6;
+  display: block;
+  text-align: center;
+}
+.summary-price strong {
+  font-size: 1.1em;
+  display: block;
+}
+.summary-price p {
+  font-size: 1.3em;
+}
 .errors {
   margin: 5px 0;
 }

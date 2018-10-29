@@ -5,10 +5,11 @@ $(document).ready(function () {
   window.onload = function () {
     $("#fechasalida").datepicker({ minDate: 0, maxDate: "+12M +10D" });
 
-    $('#savePassanger').on('click', savePassanger);
+    bookFlightValidate();
+    $(document).on('submit','#flight_booking_form', savePassenger);
 
     // Fecha nacimiento en la página de hacer reservas
-    $("#passanger_birthday").datepicker({ minDate: "-100Y" , maxDate: 0 });
+    $("#passenger_birthday").datepicker({ minDate: "-100Y" , maxDate: 0 });
 
       $('input[name="tipo"]').on('change', idayVuelta);
 
@@ -21,29 +22,64 @@ $(document).ready(function () {
           cordairways_api_show_error_message('#ajax-message', 'Debes elegir un lugar de origen y destino.');
       }
 
-        // if($('#fechasalida').val() ==''){
-        //     cordairways_api_show_error_message('#ajax-message-fechasalida', 'Debes elegir una fecha de salida.');
-        //     return false;
-        // }
-    })
+    });
 
-    
   };
 
-  function savePassanger(e) {
+
+  function bookFlightValidate() {
+      $("#flight_booking_form").validate({
+          errorClass: 'is-danger',
+          rules: {
+              passenger_name: {
+                  required: true,
+                  minlength: 5
+              }
+              passenger_lastname: {
+                  required: true,
+                  minlength: 5
+              },
+              passenger_birthday: {
+                  required: true
+              },
+              passenger_phonenumber: {
+                  required: true,
+                  minlength: 5
+              },
+              passenger_city: {
+                  required: true,
+                  minlength: 5
+              },
+              passenger_address: {
+                  required: true,
+                  minlength: 5
+              },
+              passenger_postcode: {
+                  required: true,
+                  minlength: 4
+              },
+              passenger_luggage: {
+                  required: true
+              }
+          }
+      });
+  }
+
+    function savePassenger(e) {
+
       e.preventDefault();
       var form = $('form#flight_booking_form');
 
       $('#error-message-api').hide();
 
 
-      let passanger_name = $('#passanger_name');
-      let passanger_lastname = $('#passanger_lastname');
-      let passanger_birthday = $('#passanger_birthday');
-      let passanger_phone = $('#passanger_phone_number');
-      let passanger_address = $('#passanger_address');
-      let passanger_city = $('#passanger_city');
-      let passanger_postcode = $('#passanger_postcode');
+      let passenger_name = $('#passenger_name');
+      let passenger_lastname = $('#passenger_lastname');
+      let passenger_birthday = $('#passenger_birthday');
+      let passenger_phone = $('#passenger_phone_number');
+      let passenger_address = $('#passenger_address');
+      let passenger_city = $('#passenger_city');
+      let passenger_postcode = $('#passenger_postcode');
 
       $.ajax({
           url: form.attr('action'),
@@ -51,75 +87,21 @@ $(document).ready(function () {
           dataType: 'json',
           data: form.serialize(),
           beforeSend: function(){
-              form.hide();
+              //form.hide();
               cordairways_api_create_loader('#ajax-response');
               $('#loading').removeClass('is-hidden');
           },
           complete: function(){
-              form.show();
+              //form.show();
               $('#loading').addClass('is-hidden');
           }
       })
 
 
           .done(function(data) {
-
-              console.log(name);
-
-              if(passanger_name.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique el nombre del pasajero.', 'tag is-danger');
-                  passanger_name.addClass('is-danger');
-              } else {
-                  passanger_name.removeClass('is-danger');
+              if(data.status == 'success') {
+                  console.log(data.message);
               }
-              if(passanger_lastname.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique los apellidos del pasajero.', 'tag is-danger');
-                  passanger_lastname.addClass('is-danger');
-              } else {
-                  passanger_lastname.removeClass('is-danger');
-
-              }
-              if(passanger_birthday.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la fecha de nacimiento.', 'tag is-danger');
-                  passanger_birthday.addClass('is-danger');
-              } else {
-                  passanger_birthday.removeClass('is-danger');
-
-              }
-
-              if(passanger_phone.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique un número de teléfono.', 'tag is-danger');
-                  passanger_phone.addClass('is-danger');
-              } else {
-                  passanger_phone.removeClass('is-danger');
-
-              }
-
-              if(passanger_city.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la ciudad', 'tag is-danger');
-                  passanger_city.addClass('is-danger');
-              } else {
-                  passanger_city.removeClass('is-danger');
-              }
-
-              if(passanger_address.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique la dirección.', 'tag is-danger');
-                  passanger_address.addClass('is-danger');
-              } else {
-                  passanger_address.removeClass('is-danger');
-
-              }
-
-              if(passanger_postcode.val() == '') {
-                  cordairways_api_show_error_message('#ajax-response', 'Por favor, indique el código postal.', 'tag is-danger');
-                  passanger_postcode.addClass('is-danger');
-              } else {
-                  passanger_postcode.removeClass('is-danger');
-              }
-
-
-
-              console.log(data);
 
           })
           .fail(function (x, status, msg) {

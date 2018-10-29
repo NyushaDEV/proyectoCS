@@ -1,7 +1,7 @@
 <?php
 $vuelos->buscar();
 $airports = $this->db->q('SELECT * FROM aeropuertos');
-//var_dump($_SESSION);
+var_dump($_SESSION);
 ?>
 
 <div id="search">
@@ -36,8 +36,6 @@ $airports = $this->db->q('SELECT * FROM aeropuertos');
         <div class="column">
             <form method="post" id="aeropuertos" action="">
                 <h4>Origen</h4>
-
-
                 <div class="control">
                     <div class="ui-widget">
                         <select name="aeropuerto_origen" id="combobox_origen">

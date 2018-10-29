@@ -36,3 +36,8 @@
         $(container).prepend(html);
     }
 
+    function cordairways_api_form_validate(formWrapper) {
+
+
+    }
+
