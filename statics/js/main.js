@@ -23,10 +23,11 @@ $(document).ready(function () {
       }
 
     });
-
   };
 
-
+    /**
+     * Valida el formulario de reserva de pasajeros
+     */
   function bookFlightValidate() {
       $("#flight_booking_form").validate({
           errorClass: 'is-danger',
@@ -34,7 +35,7 @@ $(document).ready(function () {
               passenger_name: {
                   required: true,
                   minlength: 5
-              }
+              },
               passenger_lastname: {
                   required: true,
                   minlength: 5
@@ -66,21 +67,12 @@ $(document).ready(function () {
   }
 
     function savePassenger(e) {
-
       e.preventDefault();
-      var form = $('form#flight_booking_form');
-
+      let form = $('form#flight_booking_form');
       $('#error-message-api').hide();
 
 
-      let passenger_name = $('#passenger_name');
-      let passenger_lastname = $('#passenger_lastname');
-      let passenger_birthday = $('#passenger_birthday');
-      let passenger_phone = $('#passenger_phone_number');
-      let passenger_address = $('#passenger_address');
-      let passenger_city = $('#passenger_city');
-      let passenger_postcode = $('#passenger_postcode');
-
+      console.log(this);
       $.ajax({
           url: form.attr('action'),
           type: 'post',
@@ -98,15 +90,15 @@ $(document).ready(function () {
       })
 
 
-          .done(function(data) {
-              if(data.status == 'success') {
-                  console.log(data.message);
-              }
+      .done(function(data) {
+          if(data.status == 'success') {
+              console.log(data.message);
+          }
 
-          })
-          .fail(function (x, status, msg) {
-              console.log(msg);
-          })
+      })
+      .fail(function (x, status, msg) {
+          console.log(msg);
+      })
   }
 
 

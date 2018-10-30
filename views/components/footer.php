@@ -22,6 +22,8 @@
 <?= $this->addRessource('api', 'js'); ?>
 <?= $this->addRessource('main', 'js'); ?>
 <?= $this->addRessource('paypal_sandbox', 'js'); ?>
+<?= $this->addRessource('bulma-steps.min', 'js'); ?>
+
 
 <script>
 

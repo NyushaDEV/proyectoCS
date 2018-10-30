@@ -55,6 +55,33 @@ class Flight {
         // do some calculations then return price
         // ..
         return $price;
+    }
 
+    public function bookUnloggedPassenger($idvuelo, $uid = null) {
+        global $db;
+        if($uid == null) {
+            $db->save('INSERT INTO reservas (idreserva, id_vuelo) VALUES(:idreserva, :id_vuelo) ', array(
+                'idreserva' => $this->generateBookingReference(),
+                'id_vuelo' => $idvuelo
+            ));
+            $db->save('UPDATE vuelos SET asientos = asientos - 1 WHERE idvuelo =:idvuelo', array('idvuelo' => $idvuelo));
+        } else {
+            $db->save('INSERT INTO reservas (idreserva, uid, id_vuelo, check_in) VALUES(:idreserva, :id_vuelo, 0) ', array(
+                'idreserva' => $this->generateBookingReference(),
+                'uid' => $uid,
+                'id_vuelo' => $idvuelo,
+            ));
+        }
+
+    }
+
+    public function generateBookingReference() {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 7; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

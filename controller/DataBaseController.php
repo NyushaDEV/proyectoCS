@@ -29,10 +29,26 @@ class DataBaseController {
         }
     }
 
-
-    public  function q($sql, $data=array()) {
+    /**
+     * Obtiene datos
+     * @param $sql
+     * @param array $data
+     * @return array
+     */
+    public function q($sql, $data=array()) {
         $q = $this->pdo->prepare($sql);
         $q->execute($data);
         return $q->fetchAll(PDO::FETCH_OBJ);
       }
+
+    /**
+     * Guarda y borra datos de la base de datos.
+     * @param $sql
+     * @param array $data
+     * @return bool
+     */
+    public function save($sql, $data=array()) {
+        $q = $this->pdo->prepare($sql);
+        return $q->execute($data);
+        }
     }

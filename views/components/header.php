@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bulma CSS -->
     <?= $this->addRessource('bulma.min', 'css'); ?>
     <?= $this->addRessource('bulma-tooltip.min', 'css'); ?>
-
+    <?= $this->addRessource('bulma-steps.min', 'css'); ?>
+    <!-- End Bulma CSS -->
     <?= $this->addRessource('styles', 'css'); ?>
     <?= $this->addRessource('jquery-ui.min', 'css'); ?>
     <?= $this->addRessource('animate.min', 'css'); ?>

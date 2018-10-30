@@ -204,6 +204,12 @@ class VuelosController
         $output .= '</div>';
 
         $output .= '<div class="field">';
+        $output .= '<label for="passenger_email">Correo electrónico</label>';
+        $output .= '<input type="email" id="passenger_email" class="input" name="passenger_email">';
+        $output .= '</div>';
+
+
+        $output .= '<div class="field">';
         $output .= '<label for="passenger_birthday">Fecha de nacimiento</label>';
         $output .= '<input id="passenger_birthday" class="input" name="passenger_birthday">';
         $output .= '</div>';
@@ -274,6 +280,7 @@ class VuelosController
      * Guarda los pasajeros.
      */
     public function savePassenger() {
+        global $usermodel;
         $error = false;
         $ajax = array();
         if (isset($_POST['passenger_name'])) {
@@ -287,10 +294,18 @@ class VuelosController
             $luggage = $_POST['passenger_luggage'];
             if (!empty($name) || !empty($lastname) || !empty($birthday) || !empty($phonenumber) || !empty($address) || !empty($postcode) || !empty($city) || !empty($luggage)) {
                 $ajax['status'] = 'success';
-
-                if ($this->flightmodel->get_flight_seats($_SESSION['vuelo']['idvuelo']) > 0) {
+                $id_vuelo = $_SESSION['vuelo']['idvuelo'];
+                if ($this->flightmodel->get_flight_seats($id_vuelo) > 0) {
                     //$this->flightmodel->savePassanger();
-                    $ajax['message'] = 'Vuelo guardado!';
+
+                    if($usermodel->isLogged()) {
+                    } else {
+                        //$this->flightmodel->bookUnloggedPassenger($id_vuelo);
+                        $ajax['message'] = 'Vuelo guardado!';
+                    }
+                } else {
+                    $ajax['message'] = '¡Asientos agotados! ¡No se puede hacer la reserva! ';
+
                 }
             }
 

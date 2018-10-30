@@ -30,6 +30,7 @@ $core = new CoreController();
 
 $usermodel = new User();
 $fmodel = new Flight();
+
 $vuelos = new VuelosController($fmodel);
 $users = new UserController($usermodel);
 // no cargamos las vistas cuando se trata de archivos que están en el directorio "ajax"

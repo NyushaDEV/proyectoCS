@@ -27,10 +27,9 @@ h4 {
   outline: none !important;
 }
 .main-content {
-  margin-top: 40px;
+  margin: 20px 20px;
   box-sizing: border-box;
   background-color: #fff;
-  min-height: 400px;
 }
 .padding-25 {
   padding: 25px;
